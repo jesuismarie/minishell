@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/18 20:45:34 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:00:50 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,18 @@ int	main(int argc, char **argv, char **envp)
 		if (shell.tree && shell.tree->type == AST_COMMAND)
 		{
 			t_cmd *cmd = shell.tree->node;
-			expand(&shell, shell.tree);
+			t_input	*tmp;
+			// expand(&shell, shell.tree);
 			call_builtins(&shell, cmd);
+			if (cmd->args)
+			{
+				tmp = read_directory(cmd->args);
+				while (tmp)
+				{
+					printf("%s\n", tmp->input);
+					tmp = tmp->next;
+				}
+			}
 		}
 		// print_ast(shell.tree, 1);
 		token_free(&(shell.token_head));

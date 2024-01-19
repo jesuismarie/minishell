@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 03:45:59 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:09:34 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void		eof_handler(t_shell *shell);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------- EXECUTE ----------------------------------*/
 /*----------------------------------------------------------------------------*/
-int			wd_match(const char *pattern, const char *text);
 char		**get_path(t_shell *shell);
 char		*find_cmd_abs_path(t_shell *shell, t_cmd *cmd);
 void		call_builtins(t_shell *shell, t_cmd *cmd);
@@ -151,5 +150,10 @@ char		*find_env_name(t_shell *shell, char *key);
 // char		*replace_with_value(t_shell *shell, char *str, char **loc);
 // char		*expand_param(t_shell *shell, char *str, int flag);
 void		expand(t_shell *shell, t_ast_node *node);
+t_input		*ft_new_arg(char *name);
+t_input		*ft_last_arg(t_input *args);
+void		ft_args_add(t_input **args, t_input *new);
+t_input		*read_directory(t_input *args);
+int			wd_match(char *pattern, char *text);
 
 #endif
