@@ -1,0 +1,8 @@
+
+*.o
+*.a
+*.out
+.vscode
+.DS_Store
+readline_ahovakim_mnazarya
+.minishell_history
