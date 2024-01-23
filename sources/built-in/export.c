@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 06:46:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/16 07:24:21 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:48:34 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,27 @@ static int	default_export(t_shell *shell)
 	return (0);
 }
 
+int	check_args(t_cmd *cmd)
+{
+	t_input	*tmp;
+
+	tmp = cmd->args;
+	while (tmp)
+	{
+		if (!(tmp->flag & F_EXPANDED))
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 int	export(t_shell *shell, t_cmd *cmd)
 {
 	char	*name;
 	char	*tmp;
 	t_input	*arg_tmp;
 
-	if (!cmd->args)
+	if (check_args(cmd) || !cmd->args)
 		return (default_export(shell));
 	arg_tmp = cmd->args;
 	while (arg_tmp)
@@ -45,7 +59,7 @@ int	export(t_shell *shell, t_cmd *cmd)
 		tmp = ft_strchr(arg_tmp->input, '=');
 		name = ft_substr(arg_tmp->input, 0, \
 		ft_strlen(arg_tmp->input) - ft_strlen(tmp));
-		if (!is_env_name(name))
+		if ((name && !*name) || (!ft_isalpha(*name) && *name != '_'))
 			builtin_err(shell, ERR_EXPORT, arg_tmp->input);
 		else
 		{

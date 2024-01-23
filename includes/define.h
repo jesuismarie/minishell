@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 03:56:02 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:39:37 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ typedef enum e_flags
 	F_SQUOTES			= 1 << 1,
 	F_DQUOTES			= 1 << 2,
 	F_ASSIGNMENT		= 1 << 3,
-	F_MUL_DOLLAR		= 1 << 4
+	F_MUL_DOLLAR		= 1 << 4,
+	F_EXPANDED			= 1 << 5
 }	t_flags;
 
 typedef enum e_ast_node_type

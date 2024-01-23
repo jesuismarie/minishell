@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 07:21:57 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/18 16:27:09 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/20 09:33:28 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	default_cd(t_shell *shell, char **path)
 {
 	char	*home;
 
-	home = find_env_param(shell, "HOME");
+	home = get_env_param(shell, "HOME");
 	if (!home)
 	{
 		ft_putstr_fd(ERR_CD, 2);
@@ -31,8 +31,8 @@ static int	set_pwd(t_shell *shell)
 	char	*new_pwd;
 	char	*current_pwd;
 
-	if (find_env_param(shell, "PWD"))
-		current_pwd = ft_strdup(find_env_param(shell, "PWD"));
+	if (get_env_param(shell, "PWD"))
+		current_pwd = ft_strdup(get_env_param(shell, "PWD"));
 	else
 		current_pwd = ft_strdup("");
 	new_pwd = getcwd(NULL, 0);

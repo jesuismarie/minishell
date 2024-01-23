@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 18:28:48 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/22 02:51:49 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:14:42 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ char	*remove_quotes(char *str)
 
 	i = -1;
 	j = -1;
-	if (ft_strlen(str) - check_quotes_count(str) == 0)
-		return (str);
 	s = malloc(ft_strlen(str) - check_quotes_count(str) + 1);
 	while (str[++i])
 	{

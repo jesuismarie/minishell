@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 00:22:47 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:49:01 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void		free_ast(t_ast_node **node);
 /*--------------------------------- BUILT_IN ---------------------------------*/
 /*----------------------------------------------------------------------------*/
 void		pwd(t_shell *shell);
+int			check_args(t_cmd *cmd);
 int			export(t_shell *shell, t_cmd *cmd);
 int			echo(t_shell *shell, t_cmd *cmd);
 int			unset(t_shell *shell, t_cmd *cmd);

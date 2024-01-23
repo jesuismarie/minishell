@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 13:15:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/14 11:34:46 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 13:28:33 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ static void	check_quotes(t_input *current, int *i)
 	{
 		current->flag |= F_DQUOTES;
 		(*i)++;
-		if (current->input[*i] && current->input[*i] == DOLLAR)
-			current->flag |= F_MUL_DOLLAR;
 		while (current->input[*i] && current->input[*i] != DQUOTES)
+		{
+			if (current->input[*i] && current->input[*i] == DOLLAR)
+				current->flag |= F_MUL_DOLLAR;
 			(*i)++;
+		}
 	}
 }
 

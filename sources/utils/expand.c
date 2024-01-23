@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 06:38:36 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/22 19:42:53 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:40:08 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ void	expand(t_shell *shell, t_ast_node *node)
 	while (*tmp)
 	{
 		if ((*tmp)->flag & (F_DOLLAR | F_MUL_DOLLAR))
+		{
 			(*tmp)->input = expand_vars(shell, (*tmp)->input, (*tmp)->flag);
+			if ((*tmp)->input && !(*tmp)->input[0])
+				(*tmp)->flag |= F_EXPANDED;
+		}
 		if (search_wildcard((*tmp)->input))
 			replace_wildcard(tmp);
 		if ((*tmp) && (*tmp)->flag & (F_SQUOTES | F_DQUOTES))
