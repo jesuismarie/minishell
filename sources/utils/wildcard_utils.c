@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:19:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 12:32:54 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/20 06:58:53 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_input	*ft_new_arg(char *name)
 	if (!arg)
 		return (0);
 	arg->input = ft_strdup(name);
+	arg->flag = 0;
 	arg->next = NULL;
 	arg->prev = NULL;
 	return (arg);

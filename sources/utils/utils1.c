@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:02:40 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/17 03:41:26 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:15:27 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,16 @@ int	is_env_name(char *s)
 
 void	ft_append(char **str, char c)
 {
-	char	*s;
+	char	s[2];
 
-	s = ft_calloc(sizeof(char), 2);
 	s[0] = c;
-	s[1] = '\0';
+	s[1] = 0;
 	if (str)
 	{
 		if (!(*str))
-		{
 			*str = ft_strdup(s);
-			free(s);
-		}
 		else
-		{
 			*str = ft_join_free(*str, s);
-			free(s);
-		}
 	}
 }
 

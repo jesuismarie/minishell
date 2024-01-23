@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 13:09:34 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:22:47 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,16 +144,17 @@ void		close_fds(t_shell *shell);
 int			is_env_name(char *s);
 void		ft_append(char **str, char c);
 char		*find_dollar(char *str, int flag);
-char		*find_env_param(t_shell *shell, char *key);
-char		*find_env_name(t_shell *shell, char *key);
-// char		*get_var_value(t_shell *shell, char *str, int *len);
-// char		*replace_with_value(t_shell *shell, char *str, char **loc);
-// char		*expand_param(t_shell *shell, char *str, int flag);
+char		*get_env_param(t_shell *shell, char *key);
+char		*get_env_name(t_shell *shell, char *key);
+char		*get_var_value(t_shell *shell, char *str, int *len);
+char		*expand_vars(t_shell *shell, char *str, int flag);
 void		expand(t_shell *shell, t_ast_node *node);
 t_input		*ft_new_arg(char *name);
 t_input		*ft_last_arg(t_input *args);
 void		ft_args_add(t_input **args, t_input *new);
-t_input		*read_directory(t_input *args);
+int			search_wildcard(char *str);
+void		replace_wildcard(t_input **arg);
 int			wd_match(char *pattern, char *text);
+t_input		*read_directory(t_input *args);
 
 #endif

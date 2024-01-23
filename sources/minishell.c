@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 13:00:50 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:39:24 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	minishell_init(int argc, char **argv, char **envp, t_shell *shell)
 		exit(0);
 	shell->env = NULL;
 	get_env(shell, envp);
-	shell->hist = ft_strjoin(find_env_param(shell, "HOME"), \
+	shell->hist = ft_strjoin(get_env_param(shell, "HOME"), \
 	"/.minishell_history");
 	printf("\033[1;34m       _     _     _       _ _ \n\033[0m");
 	printf("\033[1;34m _____|_|___|_|___| |_ ___| | |\n\033[0m");
@@ -77,21 +77,11 @@ int	main(int argc, char **argv, char **envp)
 		shell.tree = line_parsing(&shell, &tok);
 		if (shell.tree && shell.tree->type == AST_COMMAND)
 		{
+			execute(&shell, shell.tree);
 			t_cmd *cmd = shell.tree->node;
-			t_input	*tmp;
-			// expand(&shell, shell.tree);
 			call_builtins(&shell, cmd);
-			if (cmd->args)
-			{
-				tmp = read_directory(cmd->args);
-				while (tmp)
-				{
-					printf("%s\n", tmp->input);
-					tmp = tmp->next;
-				}
-			}
 		}
-		// print_ast(shell.tree, 1);
+		print_ast(shell.tree, 1);
 		token_free(&(shell.token_head));
 		free_ast(&(shell.tree));
 		free(shell.err_msg);
@@ -112,7 +102,7 @@ void	print_tok_lst(t_token *lst)
 
 void	print_ast(t_ast_node *node, int n)
 {
-	static int	c = -1;
+	int			c;
 	int			i;
 	t_operator	*op;
 	t_pipe		*pipe;
@@ -122,6 +112,7 @@ void	print_ast(t_ast_node *node, int n)
 
 	if (!node)
 		return ;
+	c = -1;
 	if (++c < 1)
 		printf("\n----ABSTRACT SYNTAX TREE----\n");
 	i = -1;

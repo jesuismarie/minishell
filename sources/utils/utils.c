@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/18 16:17:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/20 09:33:43 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*join_with_symbol(char *s1, char *s2, char c)
 	return (str);
 }
 
-char	*find_env_param(t_shell *shell, char *key)
+char	*get_env_param(t_shell *shell, char *key)
 {
 	t_env	*tmp;
 
@@ -51,7 +51,7 @@ char	*find_env_param(t_shell *shell, char *key)
 	return (NULL);
 }
 
-char	*find_env_name(t_shell *shell, char *key)
+char	*get_env_name(t_shell *shell, char *key)
 {
 	t_env	*tmp;
 
