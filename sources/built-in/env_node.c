@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 07:01:38 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/25 10:30:32 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/26 06:00:26 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,29 @@ void	del_env_node(char *var_name, t_shell *shell)
 	init_env(shell);
 }
 
-char	*search_var(t_env *env, char *var_name)
+char	*get_env_param(t_shell *shell, char *key)
 {
 	t_env	*tmp;
 
-	tmp = env;
+	tmp = shell->env_lst;
 	while (tmp)
 	{
-		if (tmp && !ft_strcmp(var_name, tmp->var_name))
+		if (!ft_strcmp(key, tmp->var_name))
 			return (tmp->var_value);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*get_env_name(t_shell *shell, char *key)
+{
+	t_env	*tmp;
+
+	tmp = shell->env_lst;
+	while (tmp)
+	{
+		if (!ft_strcmp(key, tmp->var_name))
+			return (tmp->var_name);
 		tmp = tmp->next;
 	}
 	return (NULL);

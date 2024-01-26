@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 06:46:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 15:48:34 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:12:31 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,17 @@ int	check_args(t_cmd *cmd)
 	return (1);
 }
 
+static int	check_name(char *name)
+{
+	while (*name)
+	{
+		if (!ft_isalpha(*name) && *name != '_')
+			return (0);
+		name++;
+	}
+	return (1);
+}
+
 int	export(t_shell *shell, t_cmd *cmd)
 {
 	char	*name;
@@ -59,7 +70,7 @@ int	export(t_shell *shell, t_cmd *cmd)
 		tmp = ft_strchr(arg_tmp->input, '=');
 		name = ft_substr(arg_tmp->input, 0, \
 		ft_strlen(arg_tmp->input) - ft_strlen(tmp));
-		if ((name && !*name) || (!ft_isalpha(*name) && *name != '_'))
+		if ((name && !*name) || !check_name(name))
 			builtin_err(shell, ERR_EXPORT, arg_tmp->input);
 		else
 		{

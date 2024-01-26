@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 15:39:37 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/24 07:20:24 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define DQUOTES	'\"'
 # define WILDCARD	'*'
 
-# define PS			"minishell-4.2$ "
+# define PS			"minishell 🥑$ "
 
 # define OPERATORS	"()<>|&"
 

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 13:34:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 03:46:17 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:35:12 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static int	check_num(char *str)
 {
-	if (*str == '-')
+	if (str && !*str)
+		return (0);
+	if (*str == '-' || *str == '+')
 		str++;
 	while (*str && *str >= '0' && *str <= '9')
 		str++;
@@ -28,8 +30,8 @@ static void	numeric_arg_err(t_shell *shell, char *num)
 	ft_putstr_fd("exit\nminishell: exit: ", 1);
 	ft_putstr_fd(num, 2);
 	ft_putstr_fd(" numeric argument required\n", 2);
-	set_status(shell, 2);
-	exit(2);
+	set_status(shell, 255);
+	exit(255);
 }
 
 uint64_t	ft_atoi_64(char *nptr)
@@ -66,10 +68,11 @@ static int	do_exit(t_shell *shell, t_cmd *cmd)
 	ex_code = 0;
 	flag = 0;
 	tmp = cmd->args->input;
-	if (*tmp == '-')
+	if (*tmp == '-' || *tmp == '+')
 	{
+		if (*tmp == '-')
+			flag = 1;
 		tmp++;
-		flag = 1;
 	}
 	while (*tmp == '0')
 		tmp++;
@@ -80,6 +83,7 @@ static int	do_exit(t_shell *shell, t_cmd *cmd)
 	ex_code = ft_atoi_64(cmd->args->input) % 256;
 	if ((int)ex_code < 0)
 		ex_code -= 256;
+	ft_putendl_fd("exit", 1);
 	return (ex_code);
 }
 
@@ -91,14 +95,14 @@ int	my_exit(t_shell *shell, t_cmd *cmd)
 		set_status(shell, 0);
 		exit(0);
 	}
+	else if (!check_num(cmd->args->input))
+		numeric_arg_err(shell, cmd->args->input);
 	else if (cmd->args && cmd->args->next)
 	{
 		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd(ERR_EXIT, 2);
-		return (set_status(shell, 2));
+		return (set_status(shell, 1));
 	}
-	else if (!check_num(cmd->args->input))
-		numeric_arg_err(shell, cmd->args->input);
 	exit(do_exit(shell, cmd));
 	return (0);
 }

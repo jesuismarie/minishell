@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 07:21:57 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/20 09:33:28 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/26 06:21:08 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,17 @@ static int	default_cd(t_shell *shell, char **path)
 
 static int	set_pwd(t_shell *shell)
 {
-	char	*new_pwd;
-	char	*current_pwd;
+	static int		current = 0;
+	char			*new_pwd;
+	char			*current_pwd;
 
 	if (get_env_param(shell, "PWD"))
 		current_pwd = ft_strdup(get_env_param(shell, "PWD"));
 	else
+	{
 		current_pwd = ft_strdup("");
+		current = 1;
+	}
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 	{
@@ -42,7 +46,7 @@ static int	set_pwd(t_shell *shell)
 		free(current_pwd);
 		return (1);
 	}
-	add_env_node(0, "PWD", new_pwd, shell);
+	add_env_node(current, "PWD", new_pwd, shell);
 	add_env_node(0, "OLDPWD", current_pwd, shell);
 	free(current_pwd);
 	free(new_pwd);
@@ -58,7 +62,7 @@ int	cd(t_shell *shell, t_cmd *cmd)
 		default_cd(shell, &path);
 	else
 		path = cmd->args->input;
-	if (chdir(path) != 0 && path)
+	if (!(cmd->args->flag & F_EXPANDED) && chdir(path) != 0 && path)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		perror(path);

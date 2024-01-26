@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 15:49:01 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:19:22 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,10 @@ char		*initialize_name(char **envp, int i, int j);
 char		*initialize_value(char **envp, int i, int j);
 int			add_hidden_values(t_shell *shell);
 void		get_env(t_shell *shell, char **envp);
-char		*search_var(t_env *env, char *var_name);
 void		add_env_node(int hidden, char *name, char *value, t_shell *shell);
 void		del_env_node(char *var_name, t_shell *shell);
+char		*get_env_param(t_shell *shell, char *key);
+char		*get_env_name(t_shell *shell, char *key);
 int			env_lenght(t_shell *shell);
 char		**env_vars(t_shell *shell);
 void		init_env(t_shell *shell);
@@ -145,9 +146,6 @@ void		close_fds(t_shell *shell);
 int			is_env_name(char *s);
 void		ft_append(char **str, char c);
 char		*find_dollar(char *str, int flag);
-char		*get_env_param(t_shell *shell, char *key);
-char		*get_env_name(t_shell *shell, char *key);
-char		*get_var_value(t_shell *shell, char *str, int *len);
 char		*expand_vars(t_shell *shell, char *str, int flag);
 void		expand(t_shell *shell, t_ast_node *node);
 t_input		*ft_new_arg(char *name);

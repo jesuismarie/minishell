@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:02:40 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/22 21:15:27 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:41:10 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,23 @@ char	*find_dollar(char *str, int flag)
 		if (flag & F_SQUOTES && *str == SQUOTES)
 		{
 			str++;
-			while (*str != SQUOTES)
+			while (*str && *str != SQUOTES)
 				str++;
 		}
-		if (*str == DOLLAR)
+		else if (*str == DQUOTES)
+		{
+			str++;
+			while (*str && *str != DQUOTES)
+			{
+				if (*str == DOLLAR)
+					return ((char *)str);
+				str++;
+			}
+		}
+		else if (*str == DOLLAR)
 			return ((char *)str);
-		str++;
+		else
+			str++;
 	}
 	return (0);
 }

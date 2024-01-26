@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/20 09:33:43 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:16:13 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,37 +32,6 @@ char	*join_with_symbol(char *s1, char *s2, char c)
 		str[j++] = s2[i++];
 	str[j] = '\0';
 	return (str);
-}
-
-char	*get_env_param(t_shell *shell, char *key)
-{
-	t_env	*tmp;
-
-	tmp = shell->env_lst;
-	if (key)
-	{
-		while (tmp)
-		{
-			if (!ft_strcmp(key, tmp->var_name))
-				return (tmp->var_value);
-			tmp = tmp->next;
-		}
-	}
-	return (NULL);
-}
-
-char	*get_env_name(t_shell *shell, char *key)
-{
-	t_env	*tmp;
-
-	tmp = shell->env_lst;
-	while (tmp)
-	{
-		if (!ft_strcmp(key, tmp->var_name))
-			return (tmp->var_name);
-		tmp = tmp->next;
-	}
-	return (NULL);
 }
 
 int	set_status(t_shell *shell, int stat)

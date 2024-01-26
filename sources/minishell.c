@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 00:39:24 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:59:40 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		tok = shell.token_head;
 		shell.tree = line_parsing(&shell, &tok);
-		if (shell.tree && shell.tree->type == AST_COMMAND)
-		{
-			execute(&shell, shell.tree);
-			t_cmd *cmd = shell.tree->node;
-			call_builtins(&shell, cmd);
-		}
-		print_ast(shell.tree, 1);
+		execute(&shell, shell.tree);
+		// print_ast(shell.tree, 1);
 		token_free(&(shell.token_head));
 		free_ast(&(shell.tree));
 		free(shell.err_msg);
@@ -122,9 +117,9 @@ void	print_ast(t_ast_node *node, int n)
 	{
 		op = (t_operator *)node->node;
 		if (op->type == 6)
-			printf("&&(%d)\n", node->subshell_flag);
+			printf("&&(---%d---)\n", node->subshell_flag);
 		else
-			printf("||(%d)\n", node->subshell_flag);
+			printf("||(---%d---)\n", node->subshell_flag);
 		print_ast(op->left, n + 1);
 		print_ast(op->right, n + 1);
 	}
@@ -150,7 +145,7 @@ void	print_ast(t_ast_node *node, int n)
 	else if (node->type == AST_PIPE)
 	{
 		pipe = (t_pipe *)node->node;
-		printf("|(%d)\n", node->subshell_flag);
+		printf("|(---%d---)\n", node->subshell_flag);
 		print_ast(pipe->left, n + 1);
 		print_ast(pipe->right, n + 1);
 	}
