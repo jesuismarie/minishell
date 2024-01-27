@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 07:01:38 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/26 06:00:26 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/27 03:17:20 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,18 @@ char	*get_env_name(t_shell *shell, char *key)
 		tmp = tmp->next;
 	}
 	return (NULL);
+}
+
+int	get_env_flag(t_shell *shell, char *key)
+{
+	t_env	*tmp;
+
+	tmp = shell->env_lst;
+	while (tmp)
+	{
+		if (!ft_strcmp(key, tmp->var_name))
+			return (tmp->hidden);
+		tmp = tmp->next;
+	}
+	return (0);
 }

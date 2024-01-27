@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 06:38:36 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 15:40:08 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/27 03:05:06 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ void	expand(t_shell *shell, t_ast_node *node)
 		if (search_wildcard((*tmp)->input))
 			replace_wildcard(tmp);
 		if ((*tmp) && (*tmp)->flag & (F_SQUOTES | F_DQUOTES))
+		{
 			(*tmp)->input = remove_quotes((*tmp)->input);
+			if ((*tmp)->input && !(*tmp)->input[0])
+				(*tmp)->flag |= F_DEL_QUOTES;
+		}
 		tmp = &(*tmp)->next;
 	}
 }

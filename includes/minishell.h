@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/24 14:19:22 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/27 03:36:39 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void		add_env_node(int hidden, char *name, char *value, t_shell *shell);
 void		del_env_node(char *var_name, t_shell *shell);
 char		*get_env_param(t_shell *shell, char *key);
 char		*get_env_name(t_shell *shell, char *key);
+int			get_env_flag(t_shell *shell, char *key);
 int			env_lenght(t_shell *shell);
 char		**env_vars(t_shell *shell);
 void		init_env(t_shell *shell);
