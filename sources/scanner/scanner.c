@@ -58,14 +58,14 @@ int	token_analyser(t_shell *shell, t_token *tok_lst)
 		if (tmp->type == PIPE_OP || tmp->type == OR_OP || tmp->type == AND_OP)
 			shell->ex_code = operator_analyser(shell, &tmp);
 		else if (tmp->type == WORD)
-			tmp = tmp->next;
+			shell->ex_code = word_analyser(shell, &tmp);
 		else if (tmp->type == BRACE_OPEN)
-			shell->ex_code = brace_analyser(shell, &tmp);
+			shell->ex_code = open_brace_analyser(shell, &tmp);
 		else if (tmp->type == HEREDOC || tmp->type == APPEND \
 		|| tmp->type == FILE_IN || tmp->type == FILE_OUT)
 			shell->ex_code = redirections_analyser(shell, &tmp);
 		else if (tmp->type == BRACE_CLOSE)
-			tmp = tmp->next;
+			shell->ex_code = close_brace_analyser(shell, &tmp);
 		else if (tmp->type == ENV_PARAM)
 			shell->ex_code = env_param_analizer(shell, &tmp);
 		else

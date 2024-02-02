@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:06:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/28 06:29:52 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/31 07:11:11 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,15 @@ int	operator_analyser(t_shell *shell, t_token **lst)
 	return (0);
 }
 
-static char	*set_brace_err(t_token **lst)
+int	word_analyser(t_shell *shell, t_token **lst)
 {
 	char	*msg;
 
-	msg = ft_strjoin(ERR_MSG, (*lst)->cmd->input);
-	msg = ft_join_free(msg, "\'\n");
-	set_error_stat(-2, lst);
-	return (msg);
-}
-
-int	brace_analyser(t_shell *shell, t_token **lst)
-{
-	char	*msg;
-
-	if ((*lst)->next && ((*lst)->next->type == HEREDOC \
-	|| (*lst)->next->type == APPEND || (*lst)->next->type == FILE_IN \
-	|| (*lst)->next->type == FILE_OUT))
+	if ((*lst)->next && (*lst)->next->next && (*lst)->next->type == BRACE_OPEN)
 	{
-		if ((*lst)->next->next->type != WORD \
-		&& (*lst)->next->next->type != ENV_PARAM)
-		{
-			set_error_stat(-2, &(*lst)->next->next);
-			return (set_err(shell, ERR_CL_B), 2);
-		}
-		else
-			*lst = (*lst)->next;
-	}
-	else if ((*lst)->next && ((*lst)->next->type == BRACE_CLOSE \
-	|| (*lst)->next->type == PIPE_OP || (*lst)->next->type == OR_OP \
-	|| (*lst)->next->type == AND_OP))
-	{
-		msg = set_brace_err(&(*lst)->next);
+		set_error_stat(-2, &(*lst)->next->next);
+		msg = ft_strjoin(ERR_MSG, (*lst)->next->next->cmd->input);
+		msg = ft_join_free(msg, "\'\n");
 		return (set_err(shell, msg), free(msg), 2);
 	}
 	else
