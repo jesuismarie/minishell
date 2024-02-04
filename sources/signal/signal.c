@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 09:57:01 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/19 06:48:26 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/03 04:09:39 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	eof_handler(t_shell *shell)
 		write(1, "\033[A", 3);
 		ft_putstr_fd(PS, 1);
 		ft_putstr_fd("exit\n", 1);
+		clean(shell);
 		exit(shell->ex_code);
 	}
 }
