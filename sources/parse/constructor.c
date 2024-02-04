@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 22:10:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/15 07:53:08 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:34:38 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,26 @@ void	add_cmd_node(t_token **tok_lst, t_cmd **cmd)
 	*tok_lst = (*tok_lst)->next;
 }
 
-t_ast_node	*new_cmd_node(t_shell *shell, t_cmd *cmd, t_token **tok_lst, int n)
+t_ast_node	*new_cmd_node(t_shell *shell, t_cmd *cmd, t_token **tok, \
+t_redir **red)
 {
-	int			i;
 	t_ast_node	*node;
 
 	node = ft_calloc(sizeof(t_ast_node), 1);
-	i = -1;
-	while (++i < n - 1)
-		add_cmd_node(tok_lst, &cmd);
-	if (n == 1)
-		*tok_lst = (*tok_lst)->next;
+	if (cmd->n == 1)
+		*tok = (*tok)->next;
+	while (*tok && ((*tok)->type == WORD || (*tok)->type == ENV_PARAM \
+	|| (*tok)->type == FILE_OUT || (*tok)->type == FILE_IN \
+	|| (*tok)->type == APPEND || (*tok)->type == HEREDOC))
+	{
+		if ((*tok)->type == FILE_OUT || (*tok)->type == FILE_IN \
+		|| (*tok)->type == APPEND || (*tok)->type == HEREDOC)
+			*red = parse_redir(shell, tok, red);
+		else
+			add_cmd_node(tok, &cmd);
+	}
 	node->node = (void *)cmd;
-	node->subshell_flag = 0;
+	node->red_lst = NULL;
 	node->type = AST_COMMAND;
-	node->next = parse_redir(shell, tok_lst);
-	if (node->next)
-		node->next->prev = node;
 	return (node);
 }

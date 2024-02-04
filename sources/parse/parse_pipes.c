@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:06:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/08 01:03:41 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:37:56 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ t_ast_node	*parse_pipe(t_shell *shell, t_ast_node *left, t_token **tok_lst)
 		*tok_lst = (*tok_lst)->next;
 		pipe_node->right = parse_cmd_line(shell, tok_lst);
 		node->node = (void *)pipe_node;
-		node->next = NULL;
-		node->prev = NULL;
-		node->subshell_flag = 0;
+		node->red_lst = NULL;
 		return (parse_pipe(shell, node, tok_lst));
 	}
 	return (left);

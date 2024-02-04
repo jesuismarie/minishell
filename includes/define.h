@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/27 03:07:09 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/03 02:21:59 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef enum e_flags
 typedef enum e_ast_node_type
 {
 	AST_LOGICAL_OP,
-	AST_REDIRECTION,
+	AST_SUBSHELL,
 	AST_PIPE,
 	AST_COMMAND
 }	t_ast_node_type;
@@ -109,13 +109,20 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_redir
+{
+	int				in_fd;
+	int				out_fd;
+	t_token_type	type;
+	struct s_redir	*next;
+	t_input			*filename;
+}	t_redir;
+
 typedef struct s_ast_node
 {
 	t_ast_node_type		type;
-	int					subshell_flag;
+	t_redir				*red_lst;
 	void				*node;
-	struct s_ast_node	*next;
-	struct s_ast_node	*prev;
 }	t_ast_node;
 
 typedef struct s_pipe
@@ -126,17 +133,10 @@ typedef struct s_pipe
 	t_ast_node	*right;
 }	t_pipe;
 
-typedef struct s_redir
+typedef struct s_operator
 {
 	int				in_fd;
 	int				out_fd;
-	t_token_type	type;
-	struct s_redir	*next;
-	t_input			*filename;
-}	t_redir;
-
-typedef struct s_operator
-{
 	t_token_type	type;
 	t_ast_node		*left;
 	t_ast_node		*right;
@@ -144,10 +144,12 @@ typedef struct s_operator
 
 typedef struct s_cmd
 {
+	int		n;
 	int		in_fd;
 	int		out_fd;
 	t_input	*name;
 	t_input	*args;
+	t_redir	*red_lst;
 }	t_cmd;
 
 typedef struct s_env
@@ -163,6 +165,7 @@ typedef struct s_shell
 {
 	int			err;
 	char		**env;
+	char		*prev;
 	char		*line;
 	t_ast_node	*tree;
 	char		*hist;
