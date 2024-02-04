@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:49:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/29 20:49:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/01 03:37:56 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	get_env(t_shell *shell, char **envp)
 			cur = get_env_list(cur);
 	}
 	add_hidden_values(shell);
+	chech_shlvl(shell);
 }
 
 char	**env_vars(t_shell *shell)
@@ -93,7 +94,7 @@ char	**env_vars(t_shell *shell)
 	i = 0;
 	tmp = shell->env_lst;
 	count = env_lenght(shell);
-	env = malloc(sizeof(char *) * (count + 1));
+	env = ft_calloc(sizeof(char *), count + 1);
 	while (tmp)
 	{
 		if (tmp->hidden == 0)

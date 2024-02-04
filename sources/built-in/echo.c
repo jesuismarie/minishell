@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 08:37:13 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/24 14:23:16 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:12:26 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*create_str(t_cmd *cmd)
 	while (tmp)
 	{
 		str = ft_join_free(str, tmp->input);
-		if (!(cmd->args->flag & F_EXPANDED) && str && !*str && tmp->next)
+		if (!(cmd->args->flag & (F_EXPANDED | F_DEL_QUOTES)) && tmp->next)
 			str = ft_join_free(str, " ");
 		tmp = tmp->next;
 	}

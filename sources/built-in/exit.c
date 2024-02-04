@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 13:34:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/24 10:35:12 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/03 03:38:32 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	numeric_arg_err(t_shell *shell, char *num)
 	exit(255);
 }
 
-uint64_t	ft_atoi_64(char *nptr)
+int64_t	ft_atoi_64(char *nptr)
 {
 	int			i;
 	int			j;
@@ -63,7 +63,7 @@ static int	do_exit(t_shell *shell, t_cmd *cmd)
 {
 	int			flag;
 	char		*tmp;
-	uint64_t	ex_code;
+	int64_t		ex_code;
 
 	ex_code = 0;
 	flag = 0;
@@ -103,6 +103,7 @@ int	my_exit(t_shell *shell, t_cmd *cmd)
 		ft_putstr_fd(ERR_EXIT, 2);
 		return (set_status(shell, 1));
 	}
+	clean(shell);
 	exit(do_exit(shell, cmd));
 	return (0);
 }

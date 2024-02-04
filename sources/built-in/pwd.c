@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 09:41:57 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/16 13:19:55 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/28 07:55:49 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void	pwd(t_shell *shell)
 	{
 		printf("%s\n", pwd);
 		free(pwd);
+		set_status(shell, 0);
+		return ;
+	}
+	else if (!pwd && get_env_param(shell, "PWD"))
+	{
+		printf("%s\n", get_env_param(shell, "PWD"));
 		set_status(shell, 0);
 		return ;
 	}
