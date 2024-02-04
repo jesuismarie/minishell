@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:09:53 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/25 01:47:41 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/03 02:23:22 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,17 @@ void	print_history(t_shell *shell, t_cmd	*cmd)
 
 void	shell_history(t_shell *shell)
 {
-	static int		i = -1;
-	static char		*str;
-
-	if (++i == 0)
-		str = ft_strdup("");
 	if (shell->line == NULL || ft_strcmp(shell->line, "") == 0)
 		return ;
 	shell->history_fd = open(shell->hist, O_CREAT \
 	| O_WRONLY | O_APPEND, 0644);
-	if (ft_strcmp(shell->line, str) && shell->line[0] != ' ')
+	if (ft_strcmp(shell->line, shell->prev) && shell->line[0] != ' ')
 	{
 		add_history(shell->line);
 		if (shell->history_fd != -1 && g_stat != -3)
 			ft_putendl_fd(shell->line, shell->history_fd);
 	}
-	free(str);
-	str = ft_strdup(shell->line);
+	free(shell->prev);
+	shell->prev = ft_strdup(shell->line);
 	close(shell->history_fd);
 }
