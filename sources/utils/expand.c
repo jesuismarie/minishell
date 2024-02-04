@@ -12,18 +12,10 @@
 
 #include <minishell.h>
 
-void	expand(t_shell *shell, t_ast_node *node)
+static void	expand_args(t_shell *shell, t_cmd *cmd)
 {
-	t_cmd	*cmd;
 	t_input	**tmp;
 
-	(void)shell;
-	cmd = node->node;
-	if (cmd->name->flag & (F_DOLLAR | F_MUL_DOLLAR))
-		cmd->name->input = expand_vars(shell, \
-		cmd->name->input, cmd->name->flag);
-	if (cmd->name->flag & (F_SQUOTES | F_DQUOTES))
-		cmd->name->input = remove_quotes(cmd->name->input);
 	tmp = &cmd->args;
 	while (*tmp)
 	{
@@ -43,4 +35,17 @@ void	expand(t_shell *shell, t_ast_node *node)
 		}
 		tmp = &(*tmp)->next;
 	}
+}
+
+void	expand(t_shell *shell, t_ast_node *node)
+{
+	t_cmd	*cmd;
+
+	cmd = node->node;
+	if (cmd->name->flag & (F_DOLLAR | F_MUL_DOLLAR))
+		cmd->name->input = expand_vars(shell, \
+		cmd->name->input, cmd->name->flag);
+	if (cmd->name->flag & (F_SQUOTES | F_DQUOTES))
+		cmd->name->input = remove_quotes(cmd->name->input);
+	expand_args(shell, cmd);
 }

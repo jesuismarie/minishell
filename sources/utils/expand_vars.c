@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:48:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 00:21:34 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:37:11 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static char	*get_key(char *str)
 		ft_append(&key, *(str + len));
 		len++;
 	}
-	if (ft_isdigit(*tmp) || !ft_strcmp(tmp, "?") || !ft_strcmp(tmp, "$"))
+	if (tmp && (ft_isdigit(*tmp) || !ft_strcmp(tmp, "?") \
+	|| !ft_strcmp(tmp, "$")))
 		key = tmp;
 	else
 		free(tmp);

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:02:40 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 10:41:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/01/28 07:39:08 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,24 @@ void	ft_append(char **str, char c)
 
 char	*find_dollar(char *str, int flag)
 {
+	static int	f = 0;
+
 	while (str && *str)
 	{
-		if (flag & F_SQUOTES && *str == SQUOTES)
+		if (flag & F_SQUOTES && *str == SQUOTES && !f)
 		{
 			str++;
 			while (*str && *str != SQUOTES)
 				str++;
+			str++;
 		}
 		else if (*str == DQUOTES)
 		{
+			if (f)
+				f = 0;
+			else
+				f = 1;
 			str++;
-			while (*str && *str != DQUOTES)
-			{
-				if (*str == DOLLAR)
-					return ((char *)str);
-				str++;
-			}
 		}
 		else if (*str == DOLLAR)
 			return ((char *)str);
