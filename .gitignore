@@ -1,4 +1,3 @@
-
 *.o
 *.a
 *.out
@@ -6,3 +5,4 @@
 .DS_Store
 readline_ahovakim_mnazarya
 .minishell_history
+valgrind-out.txt
