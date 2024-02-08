@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:49:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/01 03:37:56 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/07 06:13:52 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	get_env(t_shell *shell, char **envp)
 			cur = get_env_list(cur);
 	}
 	add_hidden_values(shell);
-	chech_shlvl(shell);
+	check_shlvl(shell);
 }
 
 char	**env_vars(t_shell *shell)

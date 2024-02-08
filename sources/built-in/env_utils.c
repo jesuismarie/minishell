@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:49:10 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 10:10:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/08 06:57:10 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	init_env(t_shell *shell)
 	shell->env = env_vars(shell);
 }
 
-void	print_env(t_shell *shell)
+void	print_env(t_shell *shell, t_cmd *cmd)
 {
 	int	i;
 
 	i = -1;
 	while (shell->env[++i])
-		printf("%s\n", shell->env[i]);
+		ft_putendl_fd(shell->env[i], cmd->out_fd);
 }

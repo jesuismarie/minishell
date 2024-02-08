@@ -6,13 +6,13 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 03:03:53 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/01 07:22:19 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/07 06:14:04 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	chech_shlvl(t_shell *shell)
+void	check_shlvl(t_shell *shell)
 {
 	int64_t	lvl;
 	char	*shlvl;
