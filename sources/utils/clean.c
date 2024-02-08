@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 13:49:16 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/03 04:11:06 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/08 06:54:16 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	clean(t_shell *shell)
 {
-	int		i;
 	t_env	*tmp;
 
 	while (shell->env_lst)
@@ -25,10 +24,7 @@ void	clean(t_shell *shell)
 		free(shell->env_lst);
 		shell->env_lst = tmp;
 	}
-	i = -1;
-	while (shell->env[++i])
-		free(shell->env[i]);
-	free(shell->env);
+	free_2d(shell->env);
 	free(shell->hist);
 	free(shell->prev);
 	free(shell->err_msg);

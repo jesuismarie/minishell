@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/24 14:16:13 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/06 02:02:51 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ char	*join_with_symbol(char *s1, char *s2, char c)
 		str[j++] = s2[i++];
 	str[j] = '\0';
 	return (str);
+}
+
+void	free_2d(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
 }
 
 int	set_status(t_shell *shell, int stat)
