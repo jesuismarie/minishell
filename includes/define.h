@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/03 02:21:59 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/05 06:59:17 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ typedef struct s_env
 
 typedef struct s_shell
 {
+	int			in_fd;
+	int			out_fd;
 	int			err;
 	char		**env;
 	char		*prev;
@@ -174,7 +176,6 @@ typedef struct s_shell
 	char		*err_msg;
 	int			history_fd;
 	t_token		*token_head;
-	int			all_fds[FOPEN_MAX];
 }	t_shell;
 
 #endif

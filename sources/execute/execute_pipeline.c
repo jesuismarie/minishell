@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 06:37:33 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/04 14:23:42 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/08 05:26:23 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	set_subshell_fds(t_ast_node *sub_node, int in_fd, int out_fd)
 		fds_helper(sub_node, in_fd, out_fd);
 }
 
-static void	set_fds(t_pipe *node)
+static void	set_fds(t_shell *shell, t_pipe *node)
 {
 	t_ast_node	*tmp;
 	int			fds[2];
@@ -59,23 +59,23 @@ static void	set_fds(t_pipe *node)
 	if (pipe(fds) == -1)
 	{
 		perror(PERROR_MSG);
-		exit(1);
+		shell->err = 1;
+		return ;
 	}
 	if (node->left->type == AST_SUBSHELL)
 	{
 		tmp = node->left->node;
 		set_subshell_fds(tmp, node->in_fd, fds[1]);
 	}
-	else if (node->right->type == AST_SUBSHELL)
+	else
+		fds_helper(node->left, node->in_fd, fds[1]);
+	if (node->right->type == AST_SUBSHELL)
 	{
-		tmp = node->left->node;
+		tmp = node->right->node;
 		set_subshell_fds(tmp, fds[0], node->out_fd);
 	}
 	else
-	{
-		fds_helper(node->left, node->in_fd, fds[1]);
 		fds_helper(node->right, fds[0], node->out_fd);
-	}
 }
 
 void	execute_pipeline(t_shell *shell, t_ast_node *node)
@@ -87,7 +87,7 @@ void	execute_pipeline(t_shell *shell, t_ast_node *node)
 		pipe->in_fd = STDIN_FILENO;
 	if (pipe->out_fd == -2)
 		pipe->out_fd = STDOUT_FILENO;
-	set_fds(pipe);
+	set_fds(shell, pipe);
 	execute(shell, pipe->left);
 	execute(shell, pipe->right);
 }

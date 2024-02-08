@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/03 02:24:44 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/08 07:09:48 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char		*get_pid(void);
 char		*initialize_name(char **envp, int i, int j);
 char		*initialize_value(char **envp, int i, int j);
 int			add_hidden_values(t_shell *shell);
-void		chech_shlvl(t_shell *shell);
+void		check_shlvl(t_shell *shell);
 void		get_env(t_shell *shell, char **envp);
 void		add_env_node(int hidden, char *name, char *value, t_shell *shell);
 void		del_env_node(char *var_name, t_shell *shell);
@@ -107,7 +107,7 @@ int			get_env_flag(t_shell *shell, char *key);
 int			env_lenght(t_shell *shell);
 char		**env_vars(t_shell *shell);
 void		init_env(t_shell *shell);
-void		print_env(t_shell *shell);
+void		print_env(t_shell *shell, t_cmd *cmd);
 
 /*----------------------------------------------------------------------------*/
 /*--------------------------------- HISTORY ----------------------------------*/
@@ -126,15 +126,21 @@ void		eof_handler(t_shell *shell);
 /*----------------------------------------------------------------------------*/
 char		**get_path(t_shell *shell);
 char		*find_cmd_abs_path(t_shell *shell, t_cmd *cmd);
+char		**get_command(t_cmd *cmd);
+int			check_builtins(t_cmd *cmd);
 void		call_builtins(t_shell *shell, t_cmd *cmd);
 int			execute(t_shell *shell, t_ast_node *node);
 void		execute_log_op(t_shell *shell, t_ast_node *node);
 void		execute_pipeline(t_shell *shell, t_ast_node *node);
+void		execute_subshell_node(t_shell *shell, t_ast_node *node);
+void		execute_cmd_node(t_shell *shell, t_ast_node *node);
+int			execute_redir(t_shell *shell, t_redir *red_lst);
+void		subshell_wait(t_shell *shell, t_ast_node *node, int *pid);
+void		close_fds(t_redir *red_lst);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- UTILS -----------------------------------*/
 /*----------------------------------------------------------------------------*/
-void		fds_init(t_shell *shell);
 void		dup2_err(t_shell *shell);
 char		*remove_quotes(char *str);
 void		builtin_err(t_shell *shell, char *err, char *input);
@@ -142,6 +148,7 @@ int			error(int cond, char *str, int ecode, t_shell *shell);
 void		error_exit(int cond, char *str, int ecode);
 void		set_err(t_shell *shell, char *str);
 void		set_error_stat(int stat, t_token **lst);
+void		free_2d(char **str);
 char		*join_with_symbol(char *s1, char *s2, char c);
 int			set_status(t_shell *shell, int stat);
 void		search_heredoc(t_shell *shell, t_token *lst);
@@ -150,7 +157,6 @@ void		here_wait(t_shell *shell, pid_t *pid);
 void		set_attr(int mode);
 void		hd_wait(t_shell *shell, int *pid, t_redir **node);
 void		heredoc(t_shell *shell, t_input *word, t_redir *node);
-void		close_fds(t_shell *shell);
 int			is_env_name(char *s);
 void		ft_append(char **str, char c);
 char		*find_dollar(char *str, int flag);
