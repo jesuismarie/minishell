@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 09:57:01 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/03 04:09:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:12:48 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,31 @@ static void	handle_signal(int sig)
 	}
 }
 
+void	nl_handler(char *line)
+{
+	char	*s;
+	int		i;
+
+	s = line;
+	i = 0;
+	while (s[i] && ft_iswhitespace(s[i]))
+		i++;
+	if (!ft_strcmp(s + i, "") && g_stat != 2)
+		g_stat = 1;
+}
+
 void	eof_handler(t_shell *shell)
 {
+	int	ex_code;
+
+	ex_code = ft_atoi(get_env_param(shell, "?"));
 	if (!shell->line)
 	{
 		write(1, "\033[A", 3);
 		ft_putstr_fd(PS, 1);
 		ft_putstr_fd("exit\n", 1);
 		clean(shell);
-		exit(shell->ex_code);
+		exit(ex_code);
 	}
 }
 
