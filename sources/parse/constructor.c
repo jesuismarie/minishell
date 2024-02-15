@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 22:10:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/01 13:34:38 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:11:11 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,7 @@ t_redir **red)
 	node->node = (void *)cmd;
 	node->red_lst = NULL;
 	node->type = AST_COMMAND;
+	node->in_fd = -2;
+	node->out_fd = -2;
 	return (node);
 }

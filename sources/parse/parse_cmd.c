@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 03:31:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/04 14:21:32 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:10:22 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ static t_ast_node	*parse_cmd_helper(t_ast_node *cmd, t_redir *red_lst)
 		tmp->n = 0;
 		tmp->red_lst = red_lst;
 		cmd->node = tmp;
+		cmd->in_fd = -2;
+		cmd->out_fd = -2;
 	}
 	return (cmd);
 }
@@ -121,5 +123,7 @@ t_ast_node	*parse_subshell(t_shell *shell, t_token **tok_lst)
 	node->type = AST_SUBSHELL;
 	node->red_lst = parse_redir(shell, tok_lst, &red_lst);
 	node->node = child;
+	node->in_fd = -2;
+	node->out_fd = -2;
 	return (node);
 }

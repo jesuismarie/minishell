@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 19:19:52 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/01 13:27:42 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:11:02 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ void	parse_heredoc(t_shell *shell, t_redir **node)
 	}
 	(*node)->in_fd = fds[0];
 	(*node)->out_fd = fds[1];
+	if ((*node)->in_fd < FOPEN_MAX)
+		shell->all_fds[shell->index++] = (*node)->in_fd;
+	if ((*node)->out_fd < FOPEN_MAX)
+		shell->all_fds[shell->index++] = (*node)->out_fd;
 	pid = fork();
 	if (error(pid < 0, PERROR_MSG, 1, shell))
 	{
