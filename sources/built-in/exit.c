@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 13:34:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/03 03:38:32 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:09:32 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,13 @@ static int	do_exit(t_shell *shell, t_cmd *cmd)
 
 int	my_exit(t_shell *shell, t_cmd *cmd)
 {
+	int	ecode;
+
 	if (!cmd->args)
 	{
 		ft_putstr_fd("exit\n", 1);
-		set_status(shell, 0);
-		exit(0);
+		ecode = ft_atoi(get_env_param(shell, "?"));
+		exit(ecode);
 	}
 	else if (!check_num(cmd->args->input))
 		numeric_arg_err(shell, cmd->args->input);
@@ -103,7 +105,8 @@ int	my_exit(t_shell *shell, t_cmd *cmd)
 		ft_putstr_fd(ERR_EXIT, 2);
 		return (set_status(shell, 1));
 	}
-	clean(shell);
-	exit(do_exit(shell, cmd));
+	ecode = do_exit(shell, cmd);
+	set_status(shell, ecode);
+	exit(ecode);
 	return (0);
 }
