@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/06 02:02:51 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:37:45 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	free_2d(char **str)
 	int	i;
 
 	i = -1;
-	while (str[++i])
+	if (!str)
+		return ;
+	while (str && str[++i])
 		free(str[i]);
 	free(str);
 }

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/08 07:09:48 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 20:57:43 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <define.h>
 # include <stdint.h>
+# include <string.h>
 # include <dirent.h>
 # include <termios.h>
 # include <sys/wait.h>
@@ -29,12 +30,6 @@
 # include <readline/readline.h>
 
 extern int	g_stat;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------PRINT-------------------------------------*/
-/*----------------------------------------------------------------------------*/
-void		print_tok_lst(t_token *lst);
-void		print_ast(t_ast_node *node, int n, int flag);
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------- LEXICAL ANALIZER -----------------------------*/
@@ -108,17 +103,18 @@ int			env_lenght(t_shell *shell);
 char		**env_vars(t_shell *shell);
 void		init_env(t_shell *shell);
 void		print_env(t_shell *shell, t_cmd *cmd);
+void		print_history(t_shell *shell, t_cmd *cmd);
 
 /*----------------------------------------------------------------------------*/
 /*--------------------------------- HISTORY ----------------------------------*/
 /*----------------------------------------------------------------------------*/
 void		shell_history(t_shell *shell);
-void		print_history(t_shell *shell, t_cmd *cmd);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- SIGNAL ----------------------------------*/
 /*----------------------------------------------------------------------------*/
 void		sig_init(t_shell *shell);
+void		nl_handler(char *line);
 void		eof_handler(t_shell *shell);
 
 /*----------------------------------------------------------------------------*/
@@ -128,15 +124,21 @@ char		**get_path(t_shell *shell);
 char		*find_cmd_abs_path(t_shell *shell, t_cmd *cmd);
 char		**get_command(t_cmd *cmd);
 int			check_builtins(t_cmd *cmd);
+void		cmd_print_err(t_cmd *node);
 void		call_builtins(t_shell *shell, t_cmd *cmd);
 int			execute(t_shell *shell, t_ast_node *node);
 void		execute_log_op(t_shell *shell, t_ast_node *node);
+void		fds_helper(t_shell *shell, t_ast_node *node, int in, int out);
+void		set_subshell_fds(t_shell *shell, t_ast_node *sub, int in, int out);
 void		execute_pipeline(t_shell *shell, t_ast_node *node);
 void		execute_subshell_node(t_shell *shell, t_ast_node *node);
 void		execute_cmd_node(t_shell *shell, t_ast_node *node);
+int			handle_builtins(t_shell *shell, t_ast_node *node);
 int			execute_redir(t_shell *shell, t_redir *red_lst);
-void		subshell_wait(t_shell *shell, t_ast_node *node, int *pid);
+void		ex_code_wait(t_shell *shell);
+void		subshell_exit(t_shell *shell, int *pid);
 void		close_fds(t_redir *red_lst);
+void		close_all_fds(t_shell *shell);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- UTILS -----------------------------------*/

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/05 06:59:17 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:39:33 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ typedef struct s_redir
 typedef struct s_ast_node
 {
 	t_ast_node_type		type;
+	int					in_fd;
+	int					out_fd;
 	t_redir				*red_lst;
 	void				*node;
 }	t_ast_node;
@@ -163,9 +165,12 @@ typedef struct s_env
 
 typedef struct s_shell
 {
+	int			err;
 	int			in_fd;
 	int			out_fd;
-	int			err;
+	int			flag;
+	int			pipe_count;
+	int			(*pipe_fds)[2];
 	char		**env;
 	char		*prev;
 	char		*line;
@@ -176,6 +181,8 @@ typedef struct s_shell
 	char		*err_msg;
 	int			history_fd;
 	t_token		*token_head;
+	int			all_fds[FOPEN_MAX];
+	int			index;
 }	t_shell;
 
 #endif

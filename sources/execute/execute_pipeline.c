@@ -6,55 +6,52 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 06:37:33 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/08 05:26:23 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 20:58:59 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	fds_helper(t_ast_node *node, int in_fd, int out_fd)
+void	fds_helper(t_shell *shell, t_ast_node *node, int in, int out)
 {
 	t_cmd		*cmd;
 	t_pipe		*pipe;
-	t_operator	*op;
 
 	if (node->type == AST_COMMAND)
 	{
 		cmd = node->node;
-		cmd->in_fd = in_fd;
-		cmd->out_fd = out_fd;
+		cmd->in_fd = in;
+		cmd->out_fd = out;
+		if (cmd->in_fd < FOPEN_MAX)
+			shell->all_fds[shell->index++] = cmd->in_fd;
+		if (cmd->out_fd < FOPEN_MAX)
+			shell->all_fds[shell->index++] = cmd->out_fd;
 	}
 	else if (node->type == AST_PIPE)
 	{
 		pipe = node->node;
-		pipe->in_fd = in_fd;
-		pipe->out_fd = out_fd;
-	}
-	else if (node->type == AST_LOGICAL_OP)
-	{
-		op = node->node;
-		op->in_fd = in_fd;
-		op->out_fd = out_fd;
+		pipe->in_fd = in;
+		pipe->out_fd = out;
+		if (pipe->in_fd < FOPEN_MAX)
+			shell->all_fds[shell->index++] = pipe->in_fd;
+		if (pipe->out_fd < FOPEN_MAX)
+			shell->all_fds[shell->index++] = pipe->out_fd;
 	}
 }
 
-static void	set_subshell_fds(t_ast_node *sub_node, int in_fd, int out_fd)
+void	set_subshell_fds(t_shell *shell, t_ast_node *sub, int in, int out)
 {
-	t_ast_node	*tmp;
-
-	if (sub_node->type == AST_SUBSHELL)
-	{
-		tmp = sub_node->node;
-		set_subshell_fds(tmp, in_fd, out_fd);
-	}
-	else
-		fds_helper(sub_node, in_fd, out_fd);
+	sub->in_fd = in;
+	sub->out_fd = out;
+	if (sub->in_fd < FOPEN_MAX)
+		shell->all_fds[shell->index++] = sub->in_fd;
+	if (sub->out_fd < FOPEN_MAX)
+		shell->all_fds[shell->index++] = sub->out_fd;
 }
 
 static void	set_fds(t_shell *shell, t_pipe *node)
 {
-	t_ast_node	*tmp;
-	int			fds[2];
+	int	fds[2];
 
 	if (pipe(fds) == -1)
 	{
@@ -63,19 +60,13 @@ static void	set_fds(t_shell *shell, t_pipe *node)
 		return ;
 	}
 	if (node->left->type == AST_SUBSHELL)
-	{
-		tmp = node->left->node;
-		set_subshell_fds(tmp, node->in_fd, fds[1]);
-	}
+		set_subshell_fds(shell, node->left, node->in_fd, fds[1]);
 	else
-		fds_helper(node->left, node->in_fd, fds[1]);
+		fds_helper(shell, node->left, node->in_fd, fds[1]);
 	if (node->right->type == AST_SUBSHELL)
-	{
-		tmp = node->right->node;
-		set_subshell_fds(tmp, fds[0], node->out_fd);
-	}
+		set_subshell_fds(shell, node->right, fds[0], node->out_fd);
 	else
-		fds_helper(node->right, fds[0], node->out_fd);
+		fds_helper(shell, node->right, fds[0], node->out_fd);
 }
 
 void	execute_pipeline(t_shell *shell, t_ast_node *node)
@@ -84,9 +75,9 @@ void	execute_pipeline(t_shell *shell, t_ast_node *node)
 
 	pipe = node->node;
 	if (pipe->in_fd == -2)
-		pipe->in_fd = STDIN_FILENO;
+		pipe->in_fd = shell->all_fds[0];
 	if (pipe->out_fd == -2)
-		pipe->out_fd = STDOUT_FILENO;
+		pipe->out_fd = shell->all_fds[1];
 	set_fds(shell, pipe);
 	execute(shell, pipe->left);
 	execute(shell, pipe->right);

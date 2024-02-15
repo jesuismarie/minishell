@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/07 07:03:54 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:42:59 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,24 @@ static void	minishell_init(int argc, char **argv, char **envp, t_shell *shell)
 	"/.minishell_history");
 }
 
-static	void	prompt_init(t_shell *shell)
+static void	prompt_init(t_shell *shell)
 {
 	g_stat = 0;
 	shell->err = 0;
+	shell->index = 3;
 	shell->ex_code = 0;
+	shell->pipe_count = 0;
 	shell->err_msg = ft_strdup("");
 	sig_init(shell);
 	shell->line = readline(PS);
+	shell->all_fds[0] = dup(STDIN_FILENO);
+	shell->all_fds[1] = dup(STDOUT_FILENO);
+	shell->all_fds[2] = dup(STDERR_FILENO);
+	dup2(shell->all_fds[0], STDIN_FILENO);
+	dup2(shell->all_fds[1], STDOUT_FILENO);
+	dup2(shell->all_fds[2], STDERR_FILENO);
 	eof_handler(shell);
+	nl_handler(shell->line);
 }
 
 int	prompt_validation(t_shell *shell)
@@ -53,9 +62,17 @@ int	prompt_validation(t_shell *shell)
 	check_here_count(shell);
 	shell_history(shell);
 	free(shell->line);
-	if (g_stat < 0)
+	if (g_stat < 0 || g_stat == SIGINT || g_stat == 1)
 	{
-		ft_putstr_fd(shell->err_msg, 2);
+		if (g_stat == SIGINT)
+			set_status(shell, SIGINT + 128);
+		else if (g_stat == 1)
+			set_status(shell, ft_atoi(get_env_param(shell, "?")));
+		else
+		{
+			ft_putstr_fd(shell->err_msg, 2);
+			set_status(shell, shell->ex_code);
+		}
 		free(shell->err_msg);
 		token_free(&(shell->token_head));
 		return (1);
@@ -79,6 +96,10 @@ int	main(int argc, char **argv, char **envp)
 		tok = shell.token_head;
 		shell.tree = line_parsing(&shell, &tok);
 		execute(&shell, shell.tree);
+		while (wait(&(shell.ex_code)) > -1)
+			;
+		ex_code_wait(&shell);
+		close_all_fds(&shell);
 		token_free(&(shell.token_head));
 		free_ast(&(shell.tree));
 		free(shell.err_msg);
