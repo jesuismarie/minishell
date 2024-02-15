@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:53:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/22 20:41:52 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:15:43 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,10 @@ void	heredoc(t_shell *shell, t_input *word, t_redir *node)
 			print_delim_warning(word);
 		if (!line || (word && word->input && !ft_strcmp(line, word->input)))
 			break ;
-		if (!(word->flag & (SQUOTES | DQUOTES)) && ft_strchr(line, '$'))
+		if (!(word->flag & (F_DQUOTES | F_SQUOTES)) && ft_strchr(line, '$'))
 			line = expand_vars(shell, line, F_DOLLAR);
 		ft_putstr_fd(line, node->out_fd);
+		ft_putstr_fd("\n", node->out_fd);
 		free(line);
 	}
 	close(node->in_fd);
