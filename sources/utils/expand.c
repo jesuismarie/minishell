@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 06:38:36 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/27 03:05:06 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:15:30 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ void	expand(t_shell *shell, t_ast_node *node)
 	t_cmd	*cmd;
 
 	cmd = node->node;
-	if (cmd->name->flag & (F_DOLLAR | F_MUL_DOLLAR))
+	if (cmd->name && cmd->name->flag & (F_DOLLAR | F_MUL_DOLLAR))
 		cmd->name->input = expand_vars(shell, \
 		cmd->name->input, cmd->name->flag);
-	if (cmd->name->flag & (F_SQUOTES | F_DQUOTES))
+	if (cmd->name && cmd->name->flag & (F_SQUOTES | F_DQUOTES))
 		cmd->name->input = remove_quotes(cmd->name->input);
-	expand_args(shell, cmd);
+	if (cmd->args)
+		expand_args(shell, cmd);
 }
