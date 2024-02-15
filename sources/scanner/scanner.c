@@ -73,5 +73,5 @@ int	token_analyser(t_shell *shell, t_token *tok_lst)
 	}
 	if (tmp && tmp->type == ERROR)
 		shell->ex_code = error_analyser(shell);
-	return (set_status(shell, shell->ex_code));
+	return (shell->ex_code);
 }
