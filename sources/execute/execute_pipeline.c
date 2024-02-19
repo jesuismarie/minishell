@@ -6,13 +6,13 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 06:37:33 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 20:58:59 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:06:23 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	fds_helper(t_shell *shell, t_ast_node *node, int in, int out)
+static void	fds_helper(t_shell *shell, t_ast_node *node, int in, int out)
 {
 	t_cmd		*cmd;
 	t_pipe		*pipe;
@@ -39,7 +39,7 @@ void	fds_helper(t_shell *shell, t_ast_node *node, int in, int out)
 	}
 }
 
-void	set_subshell_fds(t_shell *shell, t_ast_node *sub, int in, int out)
+static void	set_subshell_fds(t_shell *shell, t_ast_node *sub, int in, int out)
 {
 	sub->in_fd = in;
 	sub->out_fd = out;
@@ -75,9 +75,9 @@ void	execute_pipeline(t_shell *shell, t_ast_node *node)
 
 	pipe = node->node;
 	if (pipe->in_fd == -2)
-		pipe->in_fd = shell->all_fds[0];
+		pipe->in_fd = STDIN_FILENO;
 	if (pipe->out_fd == -2)
-		pipe->out_fd = shell->all_fds[1];
+		pipe->out_fd = STDOUT_FILENO;
 	set_fds(shell, pipe);
 	execute(shell, pipe->left);
 	execute(shell, pipe->right);

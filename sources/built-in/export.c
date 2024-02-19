@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 06:46:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/24 14:12:31 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:32:33 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ int	check_args(t_cmd *cmd)
 	return (1);
 }
 
-static int	check_name(char *name)
+int	check_name(char *name)
 {
+	if (*name && !ft_isalpha(*name) && *name != '_')
+		return (0);
 	while (*name)
 	{
-		if (!ft_isalpha(*name) && *name != '_')
+		if (!ft_isalnum(*name) && *name != '_')
 			return (0);
 		name++;
 	}

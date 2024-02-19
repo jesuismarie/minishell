@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 01:30:54 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 14:15:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 22:16:50 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ void	hd_wait(t_shell *shell, int *pid, t_redir **node)
 	{
 		write(1, "\n", 1);
 		set_status(shell, WTERMSIG(shell->ex_code) + 128);
-		shell->all_fds[shell->index++] = -1;
-		close((*node)->in_fd);
-		(*node)->in_fd = -1;
+		shell->all_fds[shell->index++] = (*node)->in_fd;
 	}
 	close((*node)->out_fd);
 }

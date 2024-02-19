@@ -6,36 +6,42 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:20:55 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 19:35:06 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:53:26 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+static int	args_count(t_input *args)
+{
+	int		n;
+
+	n = 0;
+	while (args)
+	{
+		args = args->next;
+		n++;
+	}
+	return (n);
+}
+
 char	**get_command(t_cmd *cmd)
 {
+	int		i;
 	t_input	*arg;
-	char	*tmp;
-	char	*command;
 	char	**splt_cmd;
 
+	i = 1;
 	arg = cmd->args;
-	if (arg)
-	{
-		command = join_with_symbol(cmd->name->input, arg->input, ' ');
-		arg = arg->next;
-	}
-	else
-		command = ft_strdup(cmd->name->input);
+	splt_cmd = malloc(sizeof(char *) * (args_count(arg) + 2));
+	splt_cmd[0] = ft_strdup(cmd->name->input);
 	while (arg)
 	{
-		tmp = join_with_symbol(command, arg->input, ' ');
-		free(command);
-		command = tmp;
+		splt_cmd[i] = ft_strdup(arg->input);
+		i++;
 		arg = arg->next;
 	}
-	splt_cmd = ft_split(command, ' ');
-	free(command);
+	splt_cmd[i] = 0;
 	return (splt_cmd);
 }
 
@@ -61,6 +67,8 @@ char	*find_cmd_abs_path(t_shell *shell, t_cmd *cmd)
 	char	**env;
 
 	i = -1;
+	if (cmd->name->flag & F_DEL_QUOTES)
+		return (cmd->name->input);
 	env = get_path(shell);
 	tmp = ft_strjoin("/", cmd->name->input);
 	while (env[++i])

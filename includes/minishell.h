@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 20:57:43 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:35:05 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int			echo(t_shell *shell, t_cmd *cmd);
 int			unset(t_shell *shell, t_cmd *cmd);
 int			cd(t_shell *shell, t_cmd *cmd);
 int64_t		ft_atoi_64(char *nptr);
+int			check_name(char *name);
 int			my_exit(t_shell *shell, t_cmd *cmd);
 char		*get_pid(void);
 char		*initialize_name(char **envp, int i, int j);
@@ -128,8 +129,6 @@ void		cmd_print_err(t_cmd *node);
 void		call_builtins(t_shell *shell, t_cmd *cmd);
 int			execute(t_shell *shell, t_ast_node *node);
 void		execute_log_op(t_shell *shell, t_ast_node *node);
-void		fds_helper(t_shell *shell, t_ast_node *node, int in, int out);
-void		set_subshell_fds(t_shell *shell, t_ast_node *sub, int in, int out);
 void		execute_pipeline(t_shell *shell, t_ast_node *node);
 void		execute_subshell_node(t_shell *shell, t_ast_node *node);
 void		execute_cmd_node(t_shell *shell, t_ast_node *node);
@@ -152,6 +151,7 @@ void		set_err(t_shell *shell, char *str);
 void		set_error_stat(int stat, t_token **lst);
 void		free_2d(char **str);
 char		*join_with_symbol(char *s1, char *s2, char c);
+void		quotes_to_unprint(char *str);
 int			set_status(t_shell *shell, int stat);
 void		search_heredoc(t_shell *shell, t_token *lst);
 void		fake_heredoc(t_shell *shell, t_token *lim);

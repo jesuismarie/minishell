@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 04:55:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 15:57:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:38:16 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	unset(t_shell *shell, t_cmd *cmd)
 	tmp = cmd->args;
 	while (tmp)
 	{
+		if (!check_name(tmp->input))
+			builtin_err(shell, ERR_UNSET, tmp->input);
 		if (ft_isalpha(tmp->input[0]) || tmp->input [0] == '_')
 		{
 			del_env_node(tmp->input, shell);
@@ -29,8 +31,6 @@ int	unset(t_shell *shell, t_cmd *cmd)
 			tmp = tmp->next;
 			continue ;
 		}
-		else
-			builtin_err(shell, ERR_UNSET, tmp->input);
 		tmp = tmp->next;
 	}
 	return (set_status(shell, shell->ex_code));

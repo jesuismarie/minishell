@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 18:28:48 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/23 14:14:42 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:37:45 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,26 @@ static int	check_quotes_count(char *str)
 		{
 			a = str[i];
 			i++;
-			n += 2;
+			n++;
 			while (str[i] && str[i] != a)
 				i++;
+			if (str[i] == a)
+				n++;
 		}
 		if (str[i])
 			i++;
 	}
 	return (n);
+}
+
+static void	quotes_backup(char *str, char *s, int i, int *j)
+{
+	if (str[i] == 1)
+		s[++(*j)] = '\'';
+	else if (str[i] == 2)
+		s[++(*j)] = '\"';
+	else
+		s[++(*j)] = str[i];
 }
 
 char	*remove_quotes(char *str)
@@ -52,10 +64,10 @@ char	*remove_quotes(char *str)
 		{
 			a = str[i];
 			while (str[++i] && str[i] != a)
-				s[++j] = str[i];
+				quotes_backup(str, s, i, &j);
 		}
 		else
-			s[++j] = str[i];
+			quotes_backup(str, s, i, &j);
 	}
 	s[++j] = 0;
 	free(str);

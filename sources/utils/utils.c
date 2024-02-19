@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 19:37:45 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:34:45 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,18 @@ void	free_2d(char **str)
 	while (str && str[++i])
 		free(str[i]);
 	free(str);
+}
+
+void	quotes_to_unprint(char *str)
+{
+	while (*str)
+	{
+		if (*str == '\'')
+			*str = 1;
+		if (*str == '\"')
+			*str = 2;
+		str ++;
+	}
 }
 
 int	set_status(t_shell *shell, int stat)

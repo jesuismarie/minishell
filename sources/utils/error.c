@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 17:10:54 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/16 13:22:06 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:28:06 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	builtin_err(t_shell *shell, char *err, char *input)
 	ft_putchar_fd('`', 2);
 	ft_putstr_fd(input, 2);
 	ft_putstr_fd("\': not a valid identifier\n", 2);
-	shell->ex_code = 1;
+	set_status(shell, 1);
 }

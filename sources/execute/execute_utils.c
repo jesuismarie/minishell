@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 05:31:17 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 19:42:14 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:19:42 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,20 @@ void	cmd_print_err(t_cmd *node)
 
 void	ex_code_wait(t_shell *shell)
 {
-	if (WTERMSIG(shell->ex_code) == SIGINT \
-	|| WTERMSIG(shell->ex_code) == SIGQUIT)
+	if (WTERMSIG(shell->ex_code) == SIGINT)
+	{
+		printf("\n");
 		set_status(shell, WTERMSIG(shell->ex_code) + 128);
-	else
+	}
+	else if (WTERMSIG(shell->ex_code) == SIGQUIT)
+	{
+		printf("Quit: %d\n", SIGQUIT);
+		set_status(shell, WTERMSIG(shell->ex_code) + 128);
+	}
+	else if (WIFEXITED(shell->ex_code))
 		set_status(shell, WEXITSTATUS(shell->ex_code));
+	else
+		return ;
 }
 
 void	subshell_exit(t_shell *shell, int *pid)

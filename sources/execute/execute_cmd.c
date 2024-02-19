@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 10:05:58 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 19:35:38 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 21:33:44 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	execute_cmd_node(t_shell *shell, t_ast_node *node)
 
 	cmd = node->node;
 	if (cmd->in_fd == -2)
-		cmd->in_fd = shell->all_fds[0];
+		cmd->in_fd = STDIN_FILENO;
 	if (cmd->out_fd == -2)
-		cmd->out_fd = shell->all_fds[1];
+		cmd->out_fd = STDOUT_FILENO;
 	if (!check_builtins(node->node))
 		handle_builtins(shell, node);
 	else

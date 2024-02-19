@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 10:06:13 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 14:12:29 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/19 22:16:07 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	set_in(t_shell *shell, t_redir *node)
 			ft_putstr_fd(": ", 2);
 			return (ft_putendl_fd(strerror(errno), 2), 1);
 		}
-		return (close(node->out_fd), close(node->in_fd), 0);
+		return (close(node->in_fd), 0);
 	}
 	if (node->out_fd == -1 || dup2(node->out_fd, STDIN_FILENO) == -1)
 	{
