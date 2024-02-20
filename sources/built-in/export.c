@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 06:46:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 16:32:33 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:26:25 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	default_export(t_shell *shell)
 		if (tmp->hidden != 1)
 		{
 			printf("declare -x %s", tmp->var_name);
-			if (tmp->hidden == 0)
+			if (tmp->hidden == 0 && tmp->var_value)
 				printf("=\"%s\"", tmp->var_value);
 			printf("\n");
 		}

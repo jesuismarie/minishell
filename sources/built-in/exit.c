@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 13:34:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/15 14:09:32 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:14:11 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	my_exit(t_shell *shell, t_cmd *cmd)
 	{
 		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd(ERR_EXIT, 2);
-		return (set_status(shell, 1));
+		return (set_status(shell, 255));
 	}
 	ecode = do_exit(shell, cmd);
 	set_status(shell, ecode);

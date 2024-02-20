@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:49:10 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/08 06:57:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:29:10 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	add_hidden_values(t_shell *shell)
 	add_env_node(1, "?", "0", shell);
 	add_env_node(1, "PS1", PS, shell);
 	add_env_node(1, "0", "minishell", shell);
+	if (!get_env_name(shell, "OLDPWD"))
+		add_env_node(0, "OLDPWD", NULL, shell);
 	free(tmp);
 	return (0);
 }
