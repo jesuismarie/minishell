@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 05:31:17 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 18:19:42 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:52:24 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ex_code_wait(t_shell *shell)
 		printf("Quit: %d\n", SIGQUIT);
 		set_status(shell, WTERMSIG(shell->ex_code) + 128);
 	}
-	else if (WIFEXITED(shell->ex_code))
+	else if (WIFEXITED(shell->ex_code) || WTERMSIG(shell->ex_code) == SIGPIPE)
 		set_status(shell, WEXITSTATUS(shell->ex_code));
 	else
 		return ;
