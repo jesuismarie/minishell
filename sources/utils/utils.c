@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 23:34:45 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:03:28 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	free_2d(char **str)
 
 void	quotes_to_unprint(char *str)
 {
+	if (!str)
+		return ;
 	while (*str)
 	{
 		if (*str == '\'')

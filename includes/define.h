@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/18 20:12:01 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:54:02 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ typedef struct s_env
 typedef struct s_shell
 {
 	int			err;
+	int			flag;
 	char		**env;
 	char		*prev;
 	char		*line;

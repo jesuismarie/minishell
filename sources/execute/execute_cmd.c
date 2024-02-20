@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 10:05:58 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 21:33:44 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:15:26 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	execute_cmd(t_shell *shell, t_ast_node *node)
 	}
 	pid = fork();
 	if (error(pid == -1, PERROR_MSG, 1, shell))
+	{
+		shell->err = 1;
 		return (free_2d(cmd), 1);
+	}
 	if (pid == 0)
 		execute_cmd_child(shell, cmd_node, cmd);
 	return (free_2d(cmd), 0);
@@ -68,7 +71,7 @@ void	execute_cmd_node(t_shell *shell, t_ast_node *node)
 	if (cmd->out_fd == -2)
 		cmd->out_fd = STDOUT_FILENO;
 	if (!check_builtins(node->node))
-		handle_builtins(shell, node);
+		do_builtin_in_pipe(shell, node);
 	else
 		execute_cmd(shell, node);
 	if (cmd->in_fd != STDIN_FILENO)

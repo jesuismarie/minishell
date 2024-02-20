@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/18 20:12:22 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:54:24 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	prompt_init(t_shell *shell)
 {
 	g_stat = 0;
 	shell->err = 0;
+	shell->flag = 0;
 	shell->index = 3;
 	shell->ex_code = 0;
 	shell->err_msg = ft_strdup("");

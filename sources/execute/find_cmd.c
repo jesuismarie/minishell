@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 12:20:55 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 15:53:26 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:39:28 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**get_command(t_cmd *cmd)
 	arg = cmd->args;
 	splt_cmd = malloc(sizeof(char *) * (args_count(arg) + 2));
 	splt_cmd[0] = ft_strdup(cmd->name->input);
-	while (arg)
+	while (arg && !(arg->flag & F_DEL_QUOTES))
 	{
 		splt_cmd[i] = ft_strdup(arg->input);
 		i++;

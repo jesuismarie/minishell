@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 19:25:11 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/20 11:58:52 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:06:30 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,27 @@ void	call_builtins(t_shell *shell, t_cmd *cmd)
 		my_exit(shell, cmd);
 	else if (!ft_strcmp(cmd->name->input, "history"))
 		print_history(shell, cmd);
+}
+
+void	do_builtin_in_pipe(t_shell *shell, t_ast_node *node)
+{
+	pid_t	pid;
+	int		ecode;
+
+	if (shell->flag == 1)
+	{
+		pid = fork();
+		if (error(pid == -1, PERROR_MSG, 1, shell))
+			return ;
+		if (pid == 0)
+		{
+			handle_builtins(shell, node);
+			ecode = ft_atoi(get_env_param(shell, "?"));
+			exit(ecode);
+		}
+	}
+	else
+		handle_builtins(shell, node);
 }
 
 int	handle_builtins(t_shell *shell, t_ast_node *node)

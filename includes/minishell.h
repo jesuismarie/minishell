@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 23:35:05 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:06:54 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void		execute_log_op(t_shell *shell, t_ast_node *node);
 void		execute_pipeline(t_shell *shell, t_ast_node *node);
 void		execute_subshell_node(t_shell *shell, t_ast_node *node);
 void		execute_cmd_node(t_shell *shell, t_ast_node *node);
+void		do_builtin_in_pipe(t_shell *shell, t_ast_node *node);
 int			handle_builtins(t_shell *shell, t_ast_node *node);
 int			execute_redir(t_shell *shell, t_redir *red_lst);
 void		ex_code_wait(t_shell *shell);

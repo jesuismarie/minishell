@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 06:37:33 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/18 20:06:23 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:57:23 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ void	execute_pipeline(t_shell *shell, t_ast_node *node)
 	if (pipe->out_fd == -2)
 		pipe->out_fd = STDOUT_FILENO;
 	set_fds(shell, pipe);
+	shell->flag = 1;
 	execute(shell, pipe->left);
+	shell->flag = 1;
 	execute(shell, pipe->right);
+	shell->flag = 0;
 }
