@@ -19,9 +19,9 @@ t_ast_node	*parse_logic_op(t_shell *shell, t_ast_node *left, t_token **tok_lst)
 
 	if (*tok_lst && ((*tok_lst)->type == AND_OP || (*tok_lst)->type == OR_OP))
 	{
-		node = ft_calloc(sizeof(t_ast_node), 1);
+		node = ft_calloc(1, sizeof(t_ast_node));
 		error_exit(!node, "malloc", 12);
-		op_node = ft_calloc(sizeof(t_operator), 1);
+		op_node = ft_calloc(1, sizeof(t_operator));
 		error_exit(!op_node, "malloc", 12);
 		node->type = AST_LOGICAL_OP;
 		op_node->type = (*tok_lst)->type;

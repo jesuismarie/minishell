@@ -31,7 +31,7 @@ void	add_env_node(int hidden, char *name, char *value, t_shell *shell)
 			break ;
 		tmp = tmp->next;
 	}
-	tmp->next = ft_calloc(sizeof(t_env), 1);
+	tmp->next = ft_calloc(1, sizeof(t_env));
 	error_exit(!tmp->next, "malloc", 12);
 	tmp->next->var_name = ft_strdup(name);
 	tmp->next->var_value = ft_strdup(value);

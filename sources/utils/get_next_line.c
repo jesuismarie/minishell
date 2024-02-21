@@ -18,7 +18,7 @@ char	*ft_join_free(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	str = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	str = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (!str)
 		return (0);
 	i = 0;
@@ -45,7 +45,7 @@ char	*ft_find(char *s)
 		return (0);
 	while (s[i] && s[i] != '\n')
 		i++;
-	str = ft_calloc(sizeof(char), i + 2);
+	str = ft_calloc(i + 2, sizeof(char));
 	if (!str)
 		return (0);
 	i = -1;
@@ -76,7 +76,7 @@ char	*ft_remainder(char *s)
 		free(s);
 		return (0);
 	}
-	str = ft_calloc(sizeof(char), ft_strlen(s) - i);
+	str = ft_calloc(ft_strlen(s) - i, sizeof(char));
 	if (!str)
 		return (0);
 	j = 0;
@@ -92,7 +92,7 @@ char	*read_str(int fd, char *s)
 	char	*buf;
 	int		n;
 
-	buf = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	while (1)
 	{
 		n = read(fd, buf, BUFFER_SIZE);

@@ -62,17 +62,12 @@ int	add_hidden_values(t_shell *shell)
 
 void	init_env(t_shell *shell)
 {
-	int	i;
-
-	i = -1;
 	if (!shell->env)
 	{
 		shell->env = env_vars(shell);
 		return ;
 	}
-	while (shell->env[++i])
-		free(shell->env[i]);
-	free(shell->env);
+	free_2d(shell->env);
 	shell->env = env_vars(shell);
 }
 

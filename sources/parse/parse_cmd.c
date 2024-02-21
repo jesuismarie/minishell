@@ -40,12 +40,12 @@ t_ast_node	*parse_cmd(t_shell *shell, t_token **tok_lst, t_redir **red_lst)
 {
 	t_cmd	*cmd;
 
-	cmd = ft_calloc(sizeof(t_cmd), 1);
+	cmd = ft_calloc(1, sizeof(t_cmd));
 	error_exit(!cmd, "malloc", 12);
 	cmd->n = word_count(*tok_lst);
 	cmd->in_fd = -2;
 	cmd->out_fd = -2;
-	cmd->name = ft_calloc(sizeof(t_input), 1);
+	cmd->name = ft_calloc(1, sizeof(t_input));
 	error_exit(!cmd->name, "malloc", 12);
 	cmd->name->flag = (*tok_lst)->cmd->flag;
 	cmd->name->input = ft_strdup((*tok_lst)->cmd->input);
@@ -67,10 +67,10 @@ static t_ast_node	*parse_cmd_helper(t_ast_node *cmd, t_redir *red_lst)
 	}
 	else if (!cmd && red_lst)
 	{
-		cmd = ft_calloc(sizeof(t_ast_node), 1);
+		cmd = ft_calloc(1, sizeof(t_ast_node));
 		error_exit(!cmd, "malloc", 12);
 		cmd->type = AST_COMMAND;
-		tmp = ft_calloc(sizeof(t_cmd), 1);
+		tmp = ft_calloc(1, sizeof(t_cmd));
 		tmp->name = NULL;
 		tmp->args = NULL;
 		tmp->in_fd = -2;
@@ -114,7 +114,7 @@ t_ast_node	*parse_subshell(t_shell *shell, t_token **tok_lst)
 
 	node = NULL;
 	red_lst = NULL;
-	node = ft_calloc(sizeof(t_ast_node), 1);
+	node = ft_calloc(1, sizeof(t_ast_node));
 	error_exit(!node, "malloc", 12);
 	*tok_lst = (*tok_lst)->next;
 	child = line_parsing(shell, tok_lst);

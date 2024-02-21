@@ -18,7 +18,7 @@ t_input	*ft_new_arg(char *name)
 
 	if (!name)
 		return (0);
-	arg = (t_input *)malloc(sizeof(t_input));
+	arg = ft_calloc(1, sizeof(t_input));
 	if (!arg)
 		return (0);
 	arg->input = ft_strdup(name);

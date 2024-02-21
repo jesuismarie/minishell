@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/20 16:54:24 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:54:19 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		tok = shell.token_head;
 		shell.tree = line_parsing(&shell, &tok);
-		execute(&shell, shell.tree);
+		if (g_stat != SIGINT)
+			execute(&shell, shell.tree);
 		while (wait(&(shell.ex_code)) > -1)
 			;
 		ex_code_wait(&shell);

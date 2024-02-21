@@ -33,7 +33,7 @@ char	**get_command(t_cmd *cmd)
 
 	i = 1;
 	arg = cmd->args;
-	splt_cmd = malloc(sizeof(char *) * (args_count(arg) + 2));
+	splt_cmd = ft_calloc(args_count(arg) + 2, sizeof(char *));
 	splt_cmd[0] = ft_strdup(cmd->name->input);
 	while (arg && !(arg->flag & F_DEL_QUOTES))
 	{

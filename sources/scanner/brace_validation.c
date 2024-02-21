@@ -16,7 +16,7 @@ static t_stack	*new_node(char c)
 {
 	t_stack	*node;
 
-	node = ft_calloc(sizeof(t_stack), 1);
+	node = ft_calloc(1, sizeof(t_stack));
 	error_exit(!node, "malloc", 12);
 	node->c = c;
 	node->next = NULL;

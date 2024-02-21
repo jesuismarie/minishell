@@ -16,12 +16,12 @@ t_redir	*new_redir_node(t_shell *shell, t_token **tok_lst)
 {
 	t_redir		*node;
 
-	node = ft_calloc(sizeof(t_redir), 1);
+	node = ft_calloc(1, sizeof(t_redir));
 	error_exit(!node, "malloc", 12);
 	node->type = (*tok_lst)->type;
 	*tok_lst = (*tok_lst)->next;
 	node->filename = new_word_node(tok_lst);
-	if (node->type == HEREDOC)
+	if (node->type == HEREDOC && g_stat != SIGINT)
 		parse_heredoc(shell, &node);
 	return (node);
 }
@@ -30,7 +30,7 @@ t_input	*new_word_node(t_token **tok_lst)
 {
 	t_input		*word;
 
-	word = ft_calloc(sizeof(t_input), 1);
+	word = ft_calloc(1, sizeof(t_input));
 	error_exit(!word, "malloc", 12);
 	if ((*tok_lst) && (*tok_lst)->cmd && (*tok_lst)->cmd->input)
 		word->input = ft_strdup((*tok_lst)->cmd->input);
@@ -51,7 +51,7 @@ void	add_cmd_node(t_token **tok_lst, t_cmd **cmd)
 	tmp = (*cmd)->args;
 	if (!(*cmd)->args)
 	{
-		(*cmd)->args = ft_calloc(sizeof(t_input), 1);
+		(*cmd)->args = ft_calloc(1, sizeof(t_input));
 		error_exit(!(*cmd)->args, "malloc", 12);
 		(*cmd)->args->flag = (*tok_lst)->cmd->flag;
 		(*cmd)->args->input = ft_strdup((*tok_lst)->cmd->input);
@@ -62,7 +62,7 @@ void	add_cmd_node(t_token **tok_lst, t_cmd **cmd)
 	{
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->next = ft_calloc(sizeof(t_input), 1);
+		tmp->next = ft_calloc(1, sizeof(t_input));
 		error_exit(!tmp, "malloc", 12);
 		tmp->next->flag = (*tok_lst)->cmd->flag;
 		tmp->next->input = ft_strdup((*tok_lst)->cmd->input);
@@ -77,7 +77,7 @@ t_redir **red)
 {
 	t_ast_node	*node;
 
-	node = ft_calloc(sizeof(t_ast_node), 1);
+	node = ft_calloc(1, sizeof(t_ast_node));
 	if (cmd->n == 1)
 		*tok = (*tok)->next;
 	while (*tok && ((*tok)->type == WORD || (*tok)->type == ENV_PARAM \

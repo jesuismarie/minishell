@@ -57,7 +57,7 @@ char	*remove_quotes(char *str)
 
 	i = -1;
 	j = -1;
-	s = malloc(ft_strlen(str) - check_quotes_count(str) + 1);
+	s = ft_calloc(ft_strlen(str) - check_quotes_count(str) + 1, sizeof(char));
 	while (str[++i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')

@@ -27,9 +27,9 @@ t_ast_node	*parse_pipe(t_shell *shell, t_ast_node *left, t_token **tok_lst)
 
 	if (*tok_lst && (*tok_lst)->type == PIPE_OP)
 	{
-		node = ft_calloc(sizeof(t_ast_node), 1);
+		node = ft_calloc(1, sizeof(t_ast_node));
 		error_exit(!node, "malloc", 12);
-		pipe_node = ft_calloc(sizeof(t_pipe), 1);
+		pipe_node = ft_calloc(1, sizeof(t_pipe));
 		error_exit(!pipe_node, "malloc", 12);
 		node->type = AST_PIPE;
 		pipe_node->in_fd = -2;

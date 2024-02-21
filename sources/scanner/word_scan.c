@@ -47,11 +47,11 @@ static int	check_flags(t_input *current)
 		check_quotes(current, &i);
 		if (current->input[i] && current->input[i] == DOLLAR)
 			current->flag |= F_DOLLAR;
-		else if (current->input[i] && current->input[i] == EQUAL)
-			current->flag |= F_ASSIGNMENT;
 		if (current->input[i])
 			i++;
 	}
+	if (ft_strchr(current->input, '='))
+		current->flag |= F_ASSIGNMENT;
 	return (current->flag);
 }
 
@@ -61,7 +61,7 @@ t_input	*get_word(char **s)
 	int		n;
 
 	n = 0;
-	cur = ft_calloc(sizeof(t_input), 1);
+	cur = ft_calloc(1, sizeof(t_input));
 	error_exit(!cur, "malloc", 12);
 	while (*(*s + n) && *(*s + n) != '\t' \
 		&& *(*s + n) != ' ' && !ft_strchr(OPERATORS, *(*s + n)))
