@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 06:38:36 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/19 23:34:40 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:08:05 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	replace_key(t_shell *shell, char **expanded, char **str, char *dol)
 	char	*value;
 
 	key = get_key(dol);
-	if (key && (ft_isalpha(*key) || *key != '_' || ft_isdigit(*key)))
+	if (key && (ft_isalnum(*key) || *key == '_' || ft_strcmp(key, "$") \
+	|| ft_strcmp(key, "?")))
 	{
 		value = NULL;
 		value = get_env_param(shell, key);

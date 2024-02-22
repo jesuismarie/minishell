@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 16:48:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/01/16 13:21:08 by mnazarya         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:12:14 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	print_quote_error(t_shell *shell, int *i, char quote)
 		else
 			set_err(shell, DQ_ERR);
 		g_stat = -2;
+		set_status(shell, 2);
 	}
 }
 
