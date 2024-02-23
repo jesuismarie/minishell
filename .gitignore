@@ -1,0 +1,12 @@
+*.o
+*.a
+*.out
+build
+.vscode
+.DS_Store
+Libft/build
+minishell
+readline_ahovakim_mnazarya
+.minishell_history
+valgrind-out.txt
+readline-8.2/config.log
