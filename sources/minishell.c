@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/07/23 16:35:18 by kali             ###   ########.fr       */
+/*   Updated: 2024/07/23 18:12:40 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	minishell_init(int argc, char **argv, char **envp, t_shell *shell)
 	printf("\033[1;34m░  ░      ░ ▒ ░░ ░░   ░ ▒░ ▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░\n\033[0m");
 	printf("\033[1;34m░      ░    ▒ ░   ░   ░ ░  ▒ ░░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   \n\033[0m");
 	printf("\033[1;34m       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░\n\033[0m");
-	printf("\033[1;34m                                                                      \n\033[0m");
 	printf("\n\033[1;34m Authors: mnazarya, ahovakim\n\n\033[0m");
 	get_env(shell, envp);
 	shell->prev = ft_strdup("");
