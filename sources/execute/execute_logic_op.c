@@ -26,8 +26,8 @@ void	execute_log_op(t_shell *shell, t_ast_node *node)
 	execute(shell, log_op->left);
 	while (wait(&(shell->ex_code)) != -1)
 		;
-	if (!shell->ex_code && log_op->type == AND_OP)
+	if (g_stat != SIGINT && !shell->ex_code && log_op->type == AND_OP)
 		execute(shell, log_op->right);
-	else if (shell->ex_code && log_op->type == OR_OP)
+	else if (g_stat != SIGINT && shell->ex_code && log_op->type == OR_OP)
 		execute(shell, log_op->right);
 }
