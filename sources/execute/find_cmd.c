@@ -70,6 +70,8 @@ char	*find_cmd_abs_path(t_shell *shell, t_cmd *cmd)
 	if (cmd->name->flag & F_DEL_QUOTES)
 		return (cmd->name->input);
 	env = get_path(shell);
+	if (!env)
+		return (cmd->name->input);
 	tmp = ft_strjoin("/", cmd->name->input);
 	while (env[++i])
 	{
