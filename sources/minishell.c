@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/07/23 18:12:40 by kali             ###   ########.fr       */
+/*   Updated: 2026/06/25 14:25:44 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ static void	minishell_init(int argc, char **argv, char **envp, t_shell *shell)
 	shell->prev = ft_strdup("");
 	shell->hist = ft_strjoin(get_env_param(shell, "HOME"), \
 	"/.minishell_history");
+	shell->all_fds[0] = -1;
+	shell->all_fds[1] = -1;
+	shell->all_fds[2] = -1;
 }
 
 static void	prompt_init(t_shell *shell)
@@ -46,6 +49,12 @@ static void	prompt_init(t_shell *shell)
 	shell->ex_code = 0;
 	shell->err_msg = ft_strdup("");
 	sig_init(shell);
+	if (shell->all_fds[0] >= 3)
+		close(shell->all_fds[0]);
+	if (shell->all_fds[1] >= 3)
+		close(shell->all_fds[1]);
+	if (shell->all_fds[2] >= 3)
+		close(shell->all_fds[2]);
 	shell->line = readline(PS);
 	shell->all_fds[0] = dup(STDIN_FILENO);
 	shell->all_fds[1] = dup(STDOUT_FILENO);

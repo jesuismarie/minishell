@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 13:34:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/20 16:14:11 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/06/25 12:50:55 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	my_exit(t_shell *shell, t_cmd *cmd)
 	}
 	ecode = do_exit(shell, cmd);
 	set_status(shell, ecode);
+	clean(shell);
 	exit(ecode);
 	return (0);
 }

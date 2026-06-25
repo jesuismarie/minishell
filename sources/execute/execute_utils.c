@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 05:31:17 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/20 11:52:24 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/05/13 17:37:18 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	close_all_fds(t_shell *shell)
 		&& shell->all_fds[i] != STDOUT_FILENO \
 		&& shell->all_fds[i] != STDERR_FILENO)
 		{
-			close(shell->all_fds[i]);
+			if (shell->all_fds[i] >= 0)
+				close(shell->all_fds[i]);
 			shell->all_fds[i] = -1;
 		}
 		i++;

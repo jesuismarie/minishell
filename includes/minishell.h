@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/20 17:06:54 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/06/25 12:51:05 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ t_ast_node	*parse_pipe(t_shell *shell, t_ast_node *left, t_token **tok_lst);
 t_ast_node	*parse_cmd_line(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_subshell(t_shell *shell, t_token **tok_lst);
 t_redir		*parse_redir(t_shell *shell, t_token **tok_lst, t_redir **red_lst);
-t_input		*parse_filename(t_token **tok_lst);
-t_ast_node	*cmd_helper(t_ast_node **cmd, t_ast_node **r1, t_ast_node **r2);
 t_ast_node	*parse_cmd(t_shell *shell, t_token **tok_lst, t_redir **red_lst);
 void		parse_heredoc(t_shell *shell, t_redir **node);
 void		free_ast(t_ast_node **node);
@@ -125,6 +123,7 @@ char		**get_path(t_shell *shell);
 char		*find_cmd_abs_path(t_shell *shell, t_cmd *cmd);
 char		**get_command(t_cmd *cmd);
 int			check_builtins(t_cmd *cmd);
+int			check_builtins_in_pipe(t_cmd *cmd);
 void		cmd_print_err(t_cmd *node);
 void		call_builtins(t_shell *shell, t_cmd *cmd);
 int			execute(t_shell *shell, t_ast_node *node);
@@ -137,13 +136,11 @@ int			handle_builtins(t_shell *shell, t_ast_node *node);
 int			execute_redir(t_shell *shell, t_redir *red_lst);
 void		ex_code_wait(t_shell *shell);
 void		subshell_exit(t_shell *shell, int *pid);
-void		close_fds(t_redir *red_lst);
 void		close_all_fds(t_shell *shell);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- UTILS -----------------------------------*/
 /*----------------------------------------------------------------------------*/
-void		dup2_err(t_shell *shell);
 char		*remove_quotes(char *str);
 void		builtin_err(t_shell *shell, char *err, char *input);
 int			error(int cond, char *str, int ecode, t_shell *shell);
@@ -156,7 +153,6 @@ void		quotes_to_unprint(char *str);
 int			set_status(t_shell *shell, int stat);
 void		search_heredoc(t_shell *shell, t_token *lst);
 void		fake_heredoc(t_shell *shell, t_token *lim);
-void		here_wait(t_shell *shell, pid_t *pid);
 void		set_attr(int mode);
 void		hd_wait(t_shell *shell, int *pid, t_redir **node);
 void		heredoc(t_shell *shell, t_input *word, t_redir *node);
