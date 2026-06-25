@@ -8,5 +8,5 @@ Libft/build
 minishell
 readline_ahovakim_mnazarya
 .minishell_history
-valgrind-out.txt
+*.txt
 readline-8.2/config.log
