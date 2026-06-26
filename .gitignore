@@ -10,3 +10,4 @@ readline_ahovakim_mnazarya
 .minishell_history
 *.txt
 readline-8.2/config.log
+readline.supp
