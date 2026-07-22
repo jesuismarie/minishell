@@ -31,7 +31,7 @@ $(BUILD)/%.o:	$(SRC)/%.c $(HEADER) Makefile
 
 all:			$(BUILD) $(NAME)
 
-$(NAME):		$(OBJS) 
+$(NAME):		$(OBJS)
 		@$(AR) $(NAME) $(OBJS)
 		@echo "${YELLOW}Libft compiled ✨ ${RESET}"
 
