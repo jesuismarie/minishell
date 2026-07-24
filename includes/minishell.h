@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/06/25 12:51:05 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/06/26 13:22:41 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int			search_wildcard(char *str);
 void		replace_wildcard(t_input **arg);
 int			wd_match(char *pattern, char *text);
 t_input		*read_directory(t_input *args);
+void		clean_each_prompt(t_shell *shell);
 void		clean(t_shell *shell);
 
 #endif

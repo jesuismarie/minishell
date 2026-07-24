@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/06/25 14:25:44 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/07/13 11:09:13 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	prompt_init(t_shell *shell)
 {
 	g_stat = 0;
 	shell->err = 0;
+	shell->line = 0;
 	shell->flag = 0;
 	shell->index = 3;
 	shell->ex_code = 0;
@@ -107,7 +108,10 @@ int	main(int argc, char **argv, char **envp)
 		if (!shell.line)
 			continue ;
 		if (prompt_validation(&shell))
+		{
+			close_all_fds(&shell);
 			continue ;
+		}
 		tok = shell.token_head;
 		shell.tree = line_parsing(&shell, &tok);
 		if (g_stat != SIGINT)
@@ -115,113 +119,7 @@ int	main(int argc, char **argv, char **envp)
 		while (wait(&(shell.ex_code)) > -1)
 			;
 		ex_code_wait(&shell);
-		close_all_fds(&shell);
-		token_free(&(shell.token_head));
-		free_ast(&(shell.tree));
-		free(shell.err_msg);
+		clean_each_prompt(&shell);
 	}
 	return (0);
 }
-
-// void	print_tok_lst(t_token *lst)
-// {
-// 	printf("\n----TOKEN LIST----\n");
-// 	while (lst)
-// 	{
-// 		printf ("token type: %d, token flag: %d, token input: %s\n", 
-// 		lst->type, lst->cmd->flag, lst->cmd->input);
-// 		lst = lst->next;
-// 	}
-// }
-
-// void	print_ast(t_ast_node *node, int n, int flag)
-// {
-// 	int			i;
-// 	t_operator	*op;
-// 	t_redir		*red;
-// 	t_pipe		*pipe;
-// 	t_cmd		*cmd;
-// 	t_input		*tmp;
-
-// 	if (!node)
-// 		return ;
-// 	i = -1;
-// 	while (++i < n - 1)
-// 		printf("	");
-// 	if (node->type == AST_LOGICAL_OP)
-// 	{
-// 		op = (t_operator *)node->node;
-// 		if (op->type == 6)
-// 			printf("&&\n");
-// 		else
-// 			printf("||\n");
-// 		print_ast(op->left, n + 1, 0);
-// 		print_ast(op->right, n + 1, 0);
-// 	}
-// 	else if (node->type == AST_SUBSHELL)
-// 	{
-// 		printf("()");
-// 		print_ast(node->node, n + 1, 1);
-// 		if (node->red_lst)
-// 		{
-// 			red = node->red_lst;
-// 			printf("subshell redir-> ");
-// 			while (red)
-// 			{
-// 				if (red->type == 0)
-// 					printf("<< ");
-// 				else if (red->type == 1)
-// 					printf(">> ");
-// 				else if (red->type == 2)
-// 					printf("< ");
-// 				else
-// 					printf("> ");
-// 				printf("%s(%d), ", red->filename->input,
-// 				red->filename->flag);
-// 				red = red->next;
-// 			}
-// 		}
-// 		flag = 0;
-// 		printf("\n");
-// 	}
-// 	else if (node->type == AST_PIPE)
-// 	{
-// 		pipe = (t_pipe *)node->node;
-// 		printf("|\n");
-// 		print_ast(pipe->left, n + 1, 0);
-// 		print_ast(pipe->right, n + 1, 0);
-// 	}
-// 	else if (node->type == AST_COMMAND)
-// 	{
-// 		cmd = (t_cmd *)node->node;
-// 		if (cmd->name)
-// 			printf("%s(%d), ", cmd->name->input, cmd->name->flag);
-// 		tmp = cmd->args;
-// 		while (tmp)
-// 		{
-// 			printf("%s(%d), ", tmp->input, tmp->flag);
-// 			tmp = tmp->next;
-// 		}
-// 		if (cmd->red_lst)
-// 		{
-// 			printf("\n");
-// 			red = cmd->red_lst;
-// 			while (red)
-// 			{
-// 				if (red->type == 0)
-// 					printf("<< ");
-// 				else if (red->type == 1)
-// 					printf(">> ");
-// 				else if (red->type == 2)
-// 					printf("< ");
-// 				else
-// 					printf("> ");
-// 				printf("%s(%d), ", red->filename->input,
-// 				red->filename->flag);
-// 				red = red->next;
-// 			}
-// 		}
-// 		if (!flag)
-// 			printf("\n");
-// 	}
-// }

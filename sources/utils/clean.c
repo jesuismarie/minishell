@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 13:49:16 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/06/25 15:28:38 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/06/26 13:22:06 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,18 @@ void	clean(t_shell *shell)
 		token_free(&(shell->token_head));
 	if (shell->line && shell->tree)
 		free_ast(&(shell->tree));
-	if (shell->all_fds[0] >= 3)
-		close(shell->all_fds[0]);
-	if (shell->all_fds[1] >= 3)
-		close(shell->all_fds[1]);
-	if (shell->all_fds[2] >= 3)
-		close(shell->all_fds[2]);
+	if (shell->line)
+		free(shell->line);
+	close_all_fds(shell);
+}
+
+void	clean_each_prompt(t_shell *shell)
+{
+	close_all_fds(shell);
+	if (shell->line && shell->token_head)
+		token_free(&(shell->token_head));
+	if (shell->line && shell->tree)
+		free_ast(&(shell->tree));
+	if (shell->err_msg)
+		free(shell->err_msg);
 }

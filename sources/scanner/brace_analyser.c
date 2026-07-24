@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brace_analyser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 06:14:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/01 08:11:52 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/06/26 12:42:54 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ static int	analyser_helper(t_shell *shell, t_token **lst)
 	|| (*lst)->next->type == FILE_OUT))
 	{
 		*lst = (*lst)->next;
+		if (!(*lst)->next)
+		{
+			set_error_stat(-2, lst);
+			return (set_err(shell, ERR_NL), 2);
+		}
 		if ((*lst)->next->type != WORD \
 		&& (*lst)->next->type != ENV_PARAM)
 		{
@@ -75,8 +80,8 @@ int	open_brace_analyser(t_shell *shell, t_token **lst)
 	|| (*lst)->next->type == APPEND || (*lst)->next->type == FILE_IN \
 	|| (*lst)->next->type == FILE_OUT))
 	{
-		if ((*lst)->next->next->type != WORD \
-		&& (*lst)->next->next->type != ENV_PARAM)
+		if (!(*lst)->next->next || ((*lst)->next->next->type != WORD \
+		&& (*lst)->next->next->type != ENV_PARAM))
 		{
 			set_error_stat(-2, &(*lst)->next->next);
 			return (set_err(shell, ERR_CL_B), 2);

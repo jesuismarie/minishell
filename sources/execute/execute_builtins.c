@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtins.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 19:25:11 by mnazarya          #+#    #+#             */
-/*   Updated: 2024/02/20 17:06:30 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/07/12 11:45:57 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	do_builtin_in_pipe(t_shell *shell, t_ast_node *node)
 		{
 			handle_builtins(shell, node);
 			ecode = ft_atoi(get_env_param(shell, "?"));
+			clean(shell);
 			exit(ecode);
 		}
 	}
@@ -90,7 +91,10 @@ int	handle_builtins(t_shell *shell, t_ast_node *node)
 	if (cmd->red_lst && execute_redir(shell, cmd->red_lst))
 		return (1);
 	call_builtins(shell, cmd);
-	dup2(shell->all_fds[0], STDIN_FILENO);
-	dup2(shell->all_fds[1], STDOUT_FILENO);
+	if (shell->flag == 0)
+	{
+		dup2(shell->all_fds[0], STDIN_FILENO);
+		dup2(shell->all_fds[1], STDOUT_FILENO);
+	}
 	return (0);
 }

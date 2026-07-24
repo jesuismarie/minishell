@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 13:34:12 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/06/25 12:50:55 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/06/26 12:28:09 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	numeric_arg_err(t_shell *shell, char *num)
 	ft_putstr_fd(num, 2);
 	ft_putstr_fd(" numeric argument required\n", 2);
 	set_status(shell, 255);
+	clean(shell);
 	exit(255);
 }
 
@@ -95,6 +96,7 @@ int	my_exit(t_shell *shell, t_cmd *cmd)
 	{
 		ft_putstr_fd("exit\n", 1);
 		ecode = ft_atoi(get_env_param(shell, "?"));
+		clean(shell);
 		exit(ecode);
 	}
 	else if (!check_num(cmd->args->input))
