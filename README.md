@@ -1,195 +1,358 @@
-# MiniShell 
+# MiniShell
 
-MiniShell is a simplified shell program developed as a project for the 42 school. It provides a basic command-line interface where users can execute various commands and manage processes within a Unix-like environment. This project aims to deepen your understanding of processes, file descriptors, and signal handling.
+MiniShell is a Unix shell implementation written in C. It recreates the core behavior of Bash: command parsing, process execution, pipelines, redirections, environment management, signal handling, and built-in commands.
+
+The goal of the project is to understand how Unix shells work internally — process creation, file descriptors, IPC, parsing into an AST, signal handling, and memory management.
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
+- [Dependencies](#dependencies)
+- [Compatibility](#compatibility)
+- [Contributing](#contributing)
+
+---
 
 ## Features
 
-MiniShell provides the following features:
+### Interactive Shell
 
-- Display a user-friendly prompt when waiting for a new command, providing an intuitive user experience.
-- Command execution: Users can execute built-in commands (e.g., `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`) as well as external commands available in the system.
-- Command line editing: Users can navigate and edit command lines using the arrow keys and basic line editing functionalities (e.g., moving the cursor, deleting characters).
-- Support single quotes `'` , preventing the shell from interpreting characters within the quoted sequence, allowing users to work with literal strings.
-- Support double quotes `"` , preventing the shell from interpreting characters within the quoted sequence, except for the `$` (dollar sign) for variable expansion.
-- Redirections: MiniShell supports input and output redirections using the `<`, `>`, `>>`, `<<` operators.
-- Pipes: Users can pipe the output of one command as input to another command using the `|` operator.
-- Environment variables: Users can manage environment variables by setting, unsetting, and displaying their values.
-- Signals: MiniShell handles signals such as `Ctrl-C` and `Ctrl-\` to interrupt or terminate the running commands. It also handles the `Ctrl-D` signal to gracefully exit the shell.
-- Error handling: MiniShell provides appropriate error messages and handles errors gracefully.
-- Support special variables, such as `$?`, for context-based command behavior.
-- History: MiniShell maintains a command history, allowing users to navigate and re-execute previous commands using the arrow keys.
-- Echo option `-n`: The `echo` command supports the `-n` option to suppress the trailing newline character.
-- Wildcard `*`: MiniShell supports the use of the wildcard `*` to match any sequence of characters in file or directory names.
-- Logical operators `&&` and `||` with parentheses: MiniShell supports logical operators for command chaining, including `&&` (AND) and `||` (OR), and users can use parentheses to control the order of execution and define priority.
+- Interactive prompt, reads and executes commands continuously.
+- Command history and line editing via GNU Readline (arrow keys, cursor movement, deleting characters).
 
-With these features, MiniShell offers a powerful and versatile command-line experience, enabling users to efficiently navigate the shell environment, execute commands with various options and conditions, and handle signals for interruption and termination. The support for wildcards, logical operators, and command grouping further enhances the flexibility and functionality of Minishell.
+### Built-in Commands
 
-## Compatibility
+| Command  | Description                            |
+|----------|----------------------------------------|
+| `echo`   | Display text, supports `-n`            |
+| `cd`     | Change the current working directory   |
+| `pwd`    | Print the current working directory    |
+| `export` | Create or update environment variables |
+| `unset`  | Remove environment variables           |
+| `env`    | Display environment variables          |
+| `exit`   | Exit the shell with a status code      |
 
-MiniShell is compatible with:
+### Command Execution
 
-- MacOS
-- Linux
+- Execution of external programs via absolute, relative, or `PATH`-resolved paths.
+- Proper exit status handling and propagation.
 
-## Getting Started
+### Quotes
 
-### For Linux
+Bash-style quoting rules:
 
-1. Before running Minishell on Linux, ensure that you have the necessary dependencies installed. You may need to install the following packages:
+- Single quotes (`'`) prevent all expansion.
+- Double quotes (`"`) allow variable expansion.
 
-   ```bash
-   sudo apt-get update -y
-   sudo apt-get install build-essential -y
-   sudo apt-get install libreadline-dev -y
-   ```
+```bash
+minishell$ echo '$HOME'
+$HOME
 
-2. Clone the repository:
+minishell$ echo "$HOME"
+/home/user
+```
 
-   ```bash
-   git clone https://github.com/jesuismarie/minishell.git
-   ```
+### Environment Variables
 
-3. Change into the project directory:
+```bash
+echo $USER      # variable expansion
+echo $?         # exit status expansion
+```
 
-   ```bash
-   cd minishell
-   ```
+### Redirections
 
-4. Compile the program:
+| Operator | Description        |
+|----------|--------------------|
+| `<`      | Input redirection  |
+| `>`      | Output redirection |
+| `>>`     | Append output      |
+| `<<`     | Here-document      |
 
-   ```bash
-   make
-   ```
+```bash
+cat < input.txt
+echo hello > output.txt
+cat << EOF
+Hello
+EOF
+```
 
-5. Run MiniShell:
+### Pipes
 
-   ```bash
-   ./minishell
-   ```
+```bash
+ls -la | grep minishell
+```
 
-6. You can now start executing commands and exploring the functionalities of Minishell.
+Pipelines connect processes by wiring their file descriptors together.
 
-### For MacOS
+### Signal Handling
 
-To get started with MiniShell, follow these steps:
+| Signal  | Behavior                   |
+|---------|----------------------------|
+| `Ctrl-C` | Interrupt current command |
+| `Ctrl-D` | Exit shell                |
+| `Ctrl-\` | Quit running process      |
 
-1. Clone the repository:
+### Bonus Features
 
-   ```bash
-   git clone https://github.com/jesuismarie/minishell.git
-   ```
+- **Wildcard expansion (`*`)** — expanded before command execution.
 
-2. Change into the project directory:
+	```bash
+	minishell$ ls *.c
+	main.c utils.c parser.c
+	```
 
-   ```bash
-   cd minishell
-   ```
+- **Logical operators (`&&`, `||`)** — respect operator precedence.
 
-3. Configure Readline Library
+	```bash
+	mkdir test && cd test
+	false || echo "Command failed"
+	```
 
-   ```bash
-   make configure
-   ```
+- **Parentheses / subshells** — grouped commands run in a separate subshell environment.
 
-4. Compile the program:
+	```bash
+	(echo hello && echo world)
+	```
 
-   ```bash
-   make
-   ```
+---
 
-5. Run MiniShell:
+## Architecture
 
-   ```bash
-   ./minishell
-   ```
+MiniShell processes input through a multi-stage pipeline:
 
-6. You can now start executing commands and exploring the functionalities of Minishell.
+```
+User Input
+    │
+    ▼
+Scanner   → tokenizes words, quotes, operators, pipes, redirections, parentheses
+    │
+    ▼
+Parser    → builds an Abstract Syntax Tree (AST), applies operator precedence
+    │
+    ▼
+Executor  → walks the AST: builtins, external commands, pipelines, redirections
+```
+
+**Scanner** — tokenizes raw input and validates it before parsing.
+
+**Parser** — converts tokens into an AST that captures operator precedence, pipes, logical operators, subshells, and redirections.
+
+Example — `echo hello && (ls | grep txt)`:
+
+```
+        &&
+       /  \
+   echo   ()
+           │
+         PIPE
+         /  \
+       ls   grep
+```
+
+**Executor** — traverses the AST and runs commands: builtin execution, forking processes, `execve()`, pipe wiring, redirections, subshell execution, and exit status propagation.
+
+---
+
+## Installation
+
+### Requirements
+
+- C compiler (`cc` or `clang`)
+- GNU Make
+- GNU Readline
+
+### Linux
+
+```bash
+sudo apt-get update -y
+sudo apt-get install build-essential -y
+sudo apt-get install libreadline-dev -y
+
+git clone https://github.com/jesuismarie/minishell.git
+cd minishell
+make
+./minishell
+```
+
+### macOS
+
+```bash
+git clone https://github.com/jesuismarie/minishell.git
+cd minishell
+make configure
+make
+./minishell
+```
+
+### Makefile Commands
+
+| Command      | Description                        |
+|--------------|------------------------------------|
+| `make`       | Compile MiniShell                  |
+| `make clean` | Remove object files                |
+| `make fclean`| Remove object files and executable |
+| `make re`    | Recompile the project              |
+
+---
 
 ## Usage
 
-Minishell provides a command-line interface where you can type commands and execute them. Here are some examples:
+```bash
+$ echo Hello, MiniShell!
+Hello, MiniShell!
 
-- Execute a built-in command:
+$ echo -n Hello
+Hello
 
-  ```bash
-  $ echo Hello, MiniShell!
-  Hello, MiniShell!
-  ```
+$ pwd
+/home/user/minishell
 
-- Execute an external command:
+$ cd /tmp
 
-  ```bash
-  $ ls -l
-  total 12
-  -rw-r--r-- 1 user group   78 Jul  1 15:23 README.md
-  -rwxr-xr-x 1 user group 9104 Jul  1 15:23 minishell
-  ```
+$ export MY_VARIABLE=value
+$ echo $MY_VARIABLE
+value
 
-- Change directory:
+$ ls -l | grep ".txt"
 
-  ```bash
-  $ cd /path/to/directory
-  ```
+$ cat input.txt > output.txt
+$ echo World >> output.txt
+$ cat < output.txt
 
-- Set an environment variable:
+$ cat << EOF
+> Hello
+> MiniShell
+> EOF
+Hello
+MiniShell
 
-  ```bash
-  $ export MY_VARIABLE=value
-  ```
+$ env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOME=/Users/user
 
-- Redirect input/output:
+$ exit
+```
 
-  ```bash
-  $ cat input.txt > output.txt
-  ```
+### Logical Operators
 
-- Pipe commands:
+```bash
+$ mkdir project && cd project
 
-  ```bash
-  $ ls -l | grep ".txt"
-  ```
+$ cd missing_directory || echo "Directory not found"
+Directory not found
+```
 
-- Display environment variables:
+### Subshells
 
-  ```bash
-  $ env
-  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-  HOME=/Users/user
-  ```
+```bash
+$ (echo hello && echo world)
+hello
+world
 
-- Exit MiniShell:
+$ (cd /tmp && pwd)
+```
 
-  ```bash
-  $ exit
-  ```
+The original shell's directory remains unchanged after the subshell exits.
 
-## Additional Test Cases
+### Exit Status
 
-To further test the capabilities of Minishell, you can use the provided `cases.txt` file. This file contains additional test cases that cover various scenarios, including complex command combinations, edge cases, and error handling.
+```bash
+$ ls existing_file
+$ echo $?
+0
 
-For more information on the available commands and features, please refer to the project documentation.
+$ ls missing_file
+ls: cannot access 'missing_file': No such file or directory
+$ echo $?
+2
+```
+
+---
+
+## Testing
+
+Additional test files are provided:
+
+```
+cases.txt
+```
+
+They cover command combinations, edge cases, parser tests, error handling, redirections, and logical operators.
+
+```bash
+./minishell < cases.txt
+```
+
+### Bash Compatibility
+
+Compare behavior directly against Bash:
+
+```bash
+echo hello
+echo "$HOME"
+echo '$HOME'
+export TEST=value
+unset TEST
+ls | grep c
+cat << EOF
+hello
+EOF
+```
+
+---
 
 ## Project Structure
 
-The project structure is as follows:
+```text
+.
+├── includes/
+├── sources/
+│   ├── built-in/
+│   ├── scanner/
+│   ├── parse/
+│   ├── execute/
+│   ├── signal/
+│   ├── history/
+│   ├── utils/
+│   └── minishell.c
+├── Libft/
+├── readline-8.2/
+├── cases.txt
+├── Makefile
+├── LICENSE
+├── NOTICE
+└── README.md
+```
 
-- `sources/`: Contains the source code files.
-- `includes/`: Contains the header files.
-- `Libft/`: A library of useful functions for string manipulation, memory allocation, etc.
-- `Makefile`: The Makefile for compiling the project.
-- `readline/`: Readline Library.
+---
 
 ## Dependencies
 
-MiniShell has the following dependencies:
+- C compiler: GCC or Clang
+- GNU Make
+- [GNU Readline](https://tiswww.case.edu/php/chet/readline/rltop.html) — command history, cursor movement, line editing
 
-- C compiler (e.g., CC)
-- Make
+---
+
+## Compatibility
+
+Tested on Linux and macOS, x86_64 and ARM64 (Apple Silicon).
+
+---
 
 ## Contributing
 
-We'd love to have you contribute! Please refer to our [contribution guidelines](./CONTRIBUTING.md) for details.
+Contributions are welcome. Before submitting changes:
 
-## License
+1. Follow the existing coding style.
+2. Make sure the project compiles without warnings: `make`
+3. Test your changes: `./minishell`
 
-[**Apache 2.0 License**](./LICENSE)
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
