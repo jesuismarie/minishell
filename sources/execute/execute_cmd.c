@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 10:05:58 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/06/24 15:11:31 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/07/26 10:35:28 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,14 @@ void	execute_cmd_node(t_shell *shell, t_ast_node *node)
 		do_builtin_in_pipe(shell, node);
 	else
 		execute_cmd(shell, node);
+	if (cmd->in_fd != STDIN_FILENO)
+	{
+		close(cmd->in_fd);
+		cmd->in_fd = -1;
+	}
+	if (cmd->out_fd != STDOUT_FILENO)
+	{
+		close(cmd->out_fd);
+		cmd->out_fd = -1;
+	}
 }
