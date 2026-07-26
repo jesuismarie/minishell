@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 00:23:21 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/06/26 13:22:41 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/07/25 22:20:52 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ char		**get_path(t_shell *shell);
 char		*find_cmd_abs_path(t_shell *shell, t_cmd *cmd);
 char		**get_command(t_cmd *cmd);
 int			check_builtins(t_cmd *cmd);
-int			check_builtins_in_pipe(t_cmd *cmd);
 void		cmd_print_err(t_cmd *node);
 void		call_builtins(t_shell *shell, t_cmd *cmd);
 int			execute(t_shell *shell, t_ast_node *node);
