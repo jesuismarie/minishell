@@ -6,7 +6,7 @@
 /*   By: mnazarya <mnazarya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2026/07/13 11:09:13 by mnazarya         ###   ########.fr       */
+/*   Updated: 2026/07/25 18:53:49 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,23 @@ static void	prompt_init(t_shell *shell)
 	nl_handler(shell->line);
 }
 
+static int	handle_prompt_error(t_shell *shell)
+{
+	if (g_stat == SIGINT)
+		set_status(shell, SIGINT + 128);
+	else if (g_stat == 1)
+		set_status(shell, ft_atoi(get_env_param(shell, "?")));
+	else
+	{
+		ft_putstr_fd(shell->err_msg, 2);
+		set_status(shell, shell->ex_code);
+	}
+	free(shell->err_msg);
+	shell->err_msg = NULL;
+	token_free(&(shell->token_head));
+	return (1);
+}
+
 int	prompt_validation(t_shell *shell)
 {
 	shell->token_head = input_scanner(shell->line);
@@ -78,21 +95,9 @@ int	prompt_validation(t_shell *shell)
 	check_here_count(shell);
 	shell_history(shell);
 	free(shell->line);
+	shell->line = NULL;
 	if (g_stat < 0 || g_stat == SIGINT || g_stat == 1)
-	{
-		if (g_stat == SIGINT)
-			set_status(shell, SIGINT + 128);
-		else if (g_stat == 1)
-			set_status(shell, ft_atoi(get_env_param(shell, "?")));
-		else
-		{
-			ft_putstr_fd(shell->err_msg, 2);
-			set_status(shell, shell->ex_code);
-		}
-		free(shell->err_msg);
-		token_free(&(shell->token_head));
-		return (1);
-	}
+		return (handle_prompt_error(shell));
 	return (0);
 }
 
