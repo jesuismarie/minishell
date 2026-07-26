@@ -286,10 +286,6 @@ cases.txt
 
 They cover command combinations, edge cases, parser tests, error handling, redirections, and logical operators.
 
-```bash
-./minishell < cases.txt
-```
-
 ### Bash Compatibility
 
 Compare behavior directly against Bash:
